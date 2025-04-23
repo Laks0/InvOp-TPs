@@ -1,0 +1,162 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{a4wide} % márgenes un poco más anchos que lo usual
+\usepackage{caratula}
+
+\begin{document}
+
+\titulo{TP1}
+
+\fecha{\today}
+
+\materia{Introdicción a la Investigación Operativa y Optimización}
+
+\integrante{Laks, Joaquín}{425/22}{laksjoaquin@gmail.com}
+
+\maketitle
+
+\section*{Datos}
+
+\begin{center}
+\textbf{Horas por 1000 litros de combustible}
+
+\begin{tabular}{| c || c | c | c |}
+	\hline
+						& Refinado & Fraccionado & Embalaje \\
+	\hline
+	Aviones   & 10       & 20          & 4 \\
+	\hline
+	Vehículos & 5        & 10          & 2 \\
+	\hline
+	Keronsene & 3        & 6           & 1 \\
+	\hline
+\end{tabular}
+
+\vspace{5mm}
+\textbf{Tiempos y gastos fijos}
+
+\begin{tabular}{| c || c | c |}
+	\hline
+										& Capacidad Mensual & Gasto Fijo \\
+	\hline
+	Refinado           & 38.000 horas      & \$5.000.000 \\
+	\hline
+	Fraccinoado        & 80.000 horas      & \$5.000.000 \\
+	\hline
+	Embalaje Aviones   & 4.000 horas       & \$2.000.000 \\
+	\hline
+	Embalaje Vehículos & 6.000 horas       & \$1.000.000 \\
+	\hline
+	Embalaje Keronsene & 7.000 horas       & \$500.000 \\
+	\hline
+\end{tabular}
+
+\vspace{5mm}
+
+	\textbf{Costos por 1000 litros}
+
+	\begin{tabular}{| c || c | c | c | c | c |}
+		\hline
+							& Precio de venta & Materia prima & Refinado & Fraccionado & Embalaje\\
+		\hline
+		Aviones   & \$16.000        & \$4.000       & \$4.100  & \$1.000   & \$1.000   \\
+		\hline
+		Vehículos & \$8.000         & \$1.000       & \$3.000  & \$600     & \$500   \\
+		\hline
+		Keronsene & \$4.000         & \$500         & \$1.500  & \$400     & \$400 \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\section{}
+\textbf{Calcular la ganancia o pérdida (prorrateando los gastos fijos) de cada producto que se obtuvo en el mes
+anterior (cuando se produjeron 500.000 litros de combustible para aviones, 3.000.000 de combustible para
+vehículos y 6.000.000 litros de kerosene) y la ganancia (o pérdida) total de la compañía.}
+
+\vspace{5mm}
+
+Primero calculamos los costos y ganancias de cada tipo de combustible sin tener en cuenta los costos fijos. Para saber cuánto costó en la etapa $j$ producir $l_i$ litros del combustible $i$ si sabemos que cada 1000 litros nos cuesta $c_{ij}$, hacemos una regla de tres simple y nos queda un gasto de $\frac{l_i}{1000} c_{ij}$. También calculamos su precio de venta y nos quedamos con un total de ganancia neta sin tener en cuenta todavía los costos fijos.
+
+\begin{center}
+	\textbf{Ingresos y costos no fijos del último mes}
+
+	\begin{tabular}{| c || c | c | c | c | c || c |}
+		\hline
+							& Precio de venta & Materia prima & Refinado     & Fraccionado & Embalaje  & Ganancia\\
+		\hline
+		Aviones   & \$8.000.000     & \$2.000.000   & \$2.050.000  & \$500.000   & \$500.000 & \$2.950.000  \\
+		\hline
+		Vehículos & \$24.000.000    & \$3.000.000   & \$9.000.000  & \$1.800.000 & \$1.500.000 & \$8.700.000\\
+		\hline
+		Keronsene & \$24.000.000    & \$3.000.000   & \$9.000.000  & \$2.400.000 & \$2.400.000 & \$7.200.000 \\
+		\hline
+	\end{tabular}
+\end{center}
+
+Para prorratear los gastos fijos, calculamos cuántas horas se usaron para cada etapa del proceso en cada tipo de combustible de la misma manera que calculamos los gastos.
+\begin{center}
+	\textbf{Horas gastadas}
+
+	\begin{tabular}{| c || c | c | c |}
+		\hline
+		&           Refinado & Fraccionado & Embalaje \\
+		\hline
+		Aviones   & 5.000    & 10.000      & 2.000    \\
+		\hline
+		Vehículos & 15.000   & 30.000      & 6.000    \\
+		\hline
+		Kerosene  & 9.000    & 36.000      & 6.000    \\
+		\hline
+		\hline
+		Total     & 29.000   & 76.000      & 14.000   \\
+		\hline
+	\end{tabular}
+\end{center}
+
+Ahora prorrateamos los costos fijos compartidos, le sumamos el costo fijo de embalaje y tenemos los últimos costos.
+
+\begin{center}
+	\textbf{Costos prorrateados}
+
+	\begin{tabular}{| c || c | c | c || c |}
+		\hline
+		&           Refinado    & Fraccionado & Embalaje    & Total \\
+		\hline
+		Aviones   & \$862.069   & \$657.895   & \$2.000.000 & \$3.519.964  \\
+		\hline
+		Vehículos & \$2.586.206 & \$1.973.684 & \$1.000.000 & \$5.559.891  \\
+		\hline
+		Kerosene  & \$1.551.724 & \$2.368.421 & \$500.000   & \$4.420.145 \\
+		\hline
+	\end{tabular}
+\end{center}
+
+Le restamos estos costos a las ganancias que teníamos antes y tenemos las ganancias totales.
+
+\begin{center}
+	\textbf{Ganancias totales}
+
+	\begin{tabular}{| c | c |}
+		\hline
+		&           Ganancia    \\
+		\hline
+		Aviones   & -\$569.964  \\
+		\hline
+		Vehículos & \$3.140.109 \\
+		\hline
+		Kerosene  & \$2.779.855 \\
+		\hline
+		Total     & \$5.350.000\\
+		\hline
+	\end{tabular}
+\end{center}
+
+Vemos que la empresa en total da ganancia, pero el combustible para aviones pérdida.
+
+\section{}
+\textbf{Si la empresa no hubiese producido combustible para aviones manteniendo en los mismos valores los otros productos, ¿la ganancia de la compañía habría sido mejor? Suponer que se cierra el sector de embalaje de combustibles para aviones.}
+
+En ese caso, las ganancias netas sin los costos fijos de Vehículos y Kerosene serían las mismas, y al total de la empresa le restamos todos los costos fijos sin contar el embalaje de combustible para aviones. Haciendo la cuenta, nos quedaría una ganancia de \$4.400.000, menor a la ganancia produciendo aviones.
+
+\end{document}
