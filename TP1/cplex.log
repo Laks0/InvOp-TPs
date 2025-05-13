@@ -1,0 +1,284 @@
+
+Log started (V22.1.1.0) Tue May 13 15:28:02 2025
+
+CPLEX Error  1616: Line 1: Expected identifier, found '*'.
+No file read.
+No problem exists.
+No problem exists.
+
+Log started (V22.1.1.0) Tue May 13 15:28:09 2025
+
+CPLEX Error  1434: Line 1: Couldn't convert '-5000000-5000000-1000000-500000' to a number.
+No file read.
+No problem exists.
+No problem exists.
+
+Log started (V22.1.1.0) Tue May 13 15:28:40 2025
+
+
+Problem 'ej3.lp' read.
+Read time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+Tried aggregator 1 time.
+LP Presolve eliminated 4 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+
+Dual simplex - Optimal:  Objective =  4.0500000000e+07
+Solution time =    0.00 sec.  Iterations = 0 (0)
+Deterministic time = 0.00 ticks  (2.17 ticks/sec)
+
+
+Variable Name           Solution Value
+Xv                         3000.000000
+Xk                         7000.000000
+
+Log started (V22.1.1.0) Tue May 13 15:28:42 2025
+
+
+Problem 'ej3.lp' read.
+Read time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+Tried aggregator 1 time.
+LP Presolve eliminated 4 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+
+Dual simplex - Optimal:  Objective =  4.0500000000e+07
+Solution time =    0.00 sec.  Iterations = 0 (0)
+Deterministic time = 0.00 ticks  (2.17 ticks/sec)
+
+
+Variable Name           Solution Value
+Xv                         3000.000000
+Xk                         7000.000000
+
+Log started (V22.1.1.0) Tue May 13 16:11:38 2025
+
+
+Problem 'ej3.lp' read.
+Read time = 0.01 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+Tried aggregator 1 time.
+LP Presolve eliminated 4 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+
+Dual simplex - Optimal:  Objective =  4.0500000000e+07
+Solution time =    0.00 sec.  Iterations = 0 (0)
+Deterministic time = 0.00 ticks  (2.17 ticks/sec)
+
+
+Variable Name           Solution Value
+Xv                         3000.000000
+Xk                         7000.000000
+
+Log started (V22.1.1.0) Tue May 13 16:19:00 2025
+
+Warning, line 4: Characters after RHS value are ignored.
+Warning, line 5: Characters after RHS value are ignored.
+
+Problem 'ej3.lp' read.
+Read time = 0.01 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+Tried aggregator 1 time.
+LP Presolve eliminated 4 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+
+Dual simplex - Optimal:  Objective =  4.0500000000e+07
+Solution time =    0.00 sec.  Iterations = 0 (0)
+Deterministic time = 0.00 ticks  (2.17 ticks/sec)
+
+
+Log started (V22.1.1.0) Tue May 13 16:19:04 2025
+
+Warning, line 4: Characters after RHS value are ignored.
+Warning, line 5: Characters after RHS value are ignored.
+
+Problem 'ej3.lp' read.
+Read time = 0.01 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+Tried aggregator 1 time.
+LP Presolve eliminated 4 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+
+Dual simplex - Optimal:  Objective =  4.0500000000e+07
+Solution time =    0.00 sec.  Iterations = 0 (0)
+Deterministic time = 0.00 ticks  (2.17 ticks/sec)
+
+
+Variable Name           Solution Value
+Xv                         3000.000000
+Xk                         7000.000000
+
+Log started (V22.1.1.0) Tue May 13 16:41:44 2025
+
+Warning, line 4: Characters after RHS value are ignored.
+Warning, line 5: Characters after RHS value are ignored.
+
+Problem 'ej4.lp' read.
+Read time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+Tried aggregator 1 time.
+LP Presolve eliminated 4 rows and 1 columns.
+Reduced LP has 1 rows, 2 columns, and 2 nonzeros.
+Presolve time = 0.00 sec. (0.00 ticks)
+
+Iteration log . . .
+Iteration:     1   Dual objective     =      43833333.333333
+
+Dual simplex - Optimal:  Objective =  4.3833333333e+07
+Solution time =    0.00 sec.  Iterations = 1 (0)
+Deterministic time = 0.01 ticks  (5.05 ticks/sec)
+
+
+Variable Name           Solution Value
+Xv                         3000.000000
+Xk                         4333.333333
+Xa                         1000.000000
+
+Log started (V22.1.1.0) Tue May 13 16:49:35 2025
+
+Warning, line 4: Characters after RHS value are ignored.
+Warning, line 5: Characters after RHS value are ignored.
+
+Problem 'ej4.lp' read.
+Read time = 0.01 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+Tried aggregator 1 time.
+LP Presolve eliminated 4 rows and 0 columns.
+Reduced LP has 1 rows, 3 columns, and 3 nonzeros.
+Presolve time = 0.00 sec. (0.00 ticks)
+
+Iteration log . . .
+Iteration:     1   Dual objective     =       6300000.000000
+
+Dual simplex - Optimal:  Objective =  6.3000000000e+06
+Solution time =    0.00 sec.  Iterations = 1 (0)
+Deterministic time = 0.01 ticks  (5.58 ticks/sec)
+
+
+Variable Name           Solution Value
+Xv                         3000.000000
+Xk                         4333.333333
+Xa                         1000.000000
+
+Log started (V22.1.1.0) Tue May 13 16:52:20 2025
+
+Warning, line 4: Characters after RHS value are ignored.
+Warning, line 5: Characters after RHS value are ignored.
+
+Problem 'ej3.lp' read.
+Read time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+Tried aggregator 1 time.
+LP Presolve eliminated 4 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+
+Dual simplex - Optimal:  Objective =  5.6000000000e+06
+Solution time =    0.00 sec.  Iterations = 0 (0)
+Deterministic time = 0.00 ticks  (2.17 ticks/sec)
+
+
+Variable Name           Solution Value
+Xv                         3000.000000
+Xk                         7000.000000
+
+Log started (V22.1.1.0) Tue May 13 16:57:03 2025
+
+Warning, line 4: Characters after RHS value are ignored.
+Warning, line 5: Characters after RHS value are ignored.
+
+Problem 'ej3.lp' read.
+Read time = 0.01 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+Tried aggregator 1 time.
+LP Presolve eliminated 4 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+
+Dual simplex - Optimal:  Objective =  5.6000000000e+06
+Solution time =    0.00 sec.  Iterations = 0 (0)
+Deterministic time = 0.00 ticks  (2.17 ticks/sec)
+
+
+Variable Name           Solution Value
+Xv                         3000.000000
+Xk                         7000.000000
+
+Log started (V22.1.1.0) Tue May 13 16:57:06 2025
+
+Warning, line 4: Characters after RHS value are ignored.
+Warning, line 5: Characters after RHS value are ignored.
+
+Problem 'ej4.lp' read.
+Read time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+Tried aggregator 1 time.
+LP Presolve eliminated 4 rows and 0 columns.
+Reduced LP has 1 rows, 3 columns, and 3 nonzeros.
+Presolve time = 0.00 sec. (0.00 ticks)
+
+Iteration log . . .
+Iteration:     1   Dual objective     =       6300000.000000
+
+Dual simplex - Optimal:  Objective =  6.3000000000e+06
+Solution time =    0.00 sec.  Iterations = 1 (0)
+Deterministic time = 0.01 ticks  (5.59 ticks/sec)
+
+
+Variable Name           Solution Value
+Xa                         1000.000000
+Xv                         3000.000000
+Xk                         4333.333333
+
+Log started (V22.1.1.0) Tue May 13 17:07:42 2025
+
+Warning, line 4: Characters after RHS value are ignored.
+Warning, line 5: Characters after RHS value are ignored.
+
+Problem 'ej4.lp' read.
+Read time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+Tried aggregator 1 time.
+LP Presolve eliminated 4 rows and 0 columns.
+Reduced LP has 1 rows, 3 columns, and 3 nonzeros.
+Presolve time = 0.00 sec. (0.00 ticks)
+
+Iteration log . . .
+Iteration:     1   Dual objective     =       6300000.000000
+
+Dual simplex - Optimal:  Objective =  6.3000000000e+06
+Solution time =    0.00 sec.  Iterations = 1 (0)
+Deterministic time = 0.01 ticks  (5.59 ticks/sec)
+
+
+Variable Name           Solution Value
+Xa                         1000.000000
+Xv                         3000.000000
+Xk                         4333.333333
+
+Log started (V22.1.1.0) Tue May 13 17:50:53 2025
+
+Warning, line 4: Characters after RHS value are ignored.
+Warning, line 5: Characters after RHS value are ignored.
+
+Problem 'ej3.lp' read.
+Read time = 0.00 sec. (0.00 ticks)
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+Tried aggregator 1 time.
+LP Presolve eliminated 4 rows and 2 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+
+Dual simplex - Optimal:  Objective =  5.6000000000e+06
+Solution time =    0.00 sec.  Iterations = 0 (0)
+Deterministic time = 0.00 ticks  (2.17 ticks/sec)
+
+
+Variable Name           Solution Value
+Xv                         3000.000000
+Xk                         7000.000000
