@@ -1,6 +1,6 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2025.5.13)  13 MAY 2025 17:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2025.4.23)  15 MAY 2025 15:34
 entering extended mode
- restricted \write18 enabled.
+ \write18 enabled.
  %&-line parsing enabled.
 **informe.tex
 (./informe.tex
@@ -262,20 +262,20 @@ e
 <logo_dc.jpg, id=1, 215.6055pt x 83.5923pt>
 File: logo_dc.jpg Graphic file (type jpg)
 <use logo_dc.jpg>
-Package pdftex.def Info: logo_dc.jpg  used on input line 19.
+Package pdftex.def Info: logo_dc.jpg  used on input line 20.
 (pdftex.def)             Requested size: 215.60497pt x 83.59207pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 19--19
+Underfull \hbox (badness 10000) in paragraph at lines 20--20
 
  []
 
 <logo_uba.jpg, id=2, 225.4824pt x 231.7458pt>
 File: logo_uba.jpg Graphic file (type jpg)
 <use logo_uba.jpg>
-Package pdftex.def Info: logo_uba.jpg  used on input line 19.
+Package pdftex.def Info: logo_uba.jpg  used on input line 20.
 (pdftex.def)             Requested size: 225.48184pt x 231.74522pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 19--19
+Underfull \hbox (badness 10000) in paragraph at lines 20--20
 
  []
 
@@ -283,42 +283,45 @@ Underfull \hbox (badness 10000) in paragraph at lines 19--19
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./logo_dc.jpg> <./logo_uba
 .jpg>]
-Overfull \hbox (0.64543pt too wide) detected at line 97
-\OML/cmm/m/it/10 G[][] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 G[][] \OT1/cmr/m/n/10
- + \OML/cmm/m/it/10 G[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 C[]X[] \OT1/cmr/m/n/
-10 + \OML/cmm/m/it/10 C[]X[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 C[]X[] \OT1/cmr
-/m/n/10 + \OML/cmm/m/it/10 C[]X[]
+Overfull \hbox (10.56734pt too wide) in paragraph at lines 62--74
+ [][] 
  []
 
 [1{/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-[2] (./informe.aux
+[2
+
+] [3
+
+] (./informe.aux
 LaTeX Info: Redefining \. on input line 8.
 LaTeX Info: Redefining \% on input line 8.
 ) ) 
 Here is how much of TeX's memory you used:
- 4255 strings out of 477985
- 70513 string characters out of 5839380
- 1869388 words of memory out of 6000000
- 24406 multiletter control sequences out of 15000+600000
+ 4257 strings out of 477985
+ 70541 string characters out of 5839380
+ 1867388 words of memory out of 6000000
+ 24408 multiletter control sequences out of 15000+600000
  515529 words of font info for 44 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 72i,11n,76p,423b,365s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,11n,76p,408b,365s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></u
 sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmssbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt
-8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on informe.pdf (3 pages, 513120 bytes).
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmssbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
+7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on informe.pdf (4 pages, 531339 bytes).
 PDF statistics:
- 82 PDF objects out of 1000 (max. 8388607)
- 48 compressed objects within 1 object stream
+ 95 PDF objects out of 1000 (max. 8388607)
+ 56 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -11,10 +11,11 @@
 
 \fecha{\today}
 
-\materia{Introdicción a la Investigación Operativa y Optimización}
+\materia{Introducción a la Investigación Operativa y Optimización}
 
 \integrante{Laks, Joaquín}{425/22}{laksjoaquin@gmail.com}
 \integrante{Szabo, Jorge}{1683/21}{jorgecszabo@gmail.com}
+\integrante{Wilders Azara, Santiago}{350/19}{santiago199913@gmail.com}
 
 \maketitle
 
@@ -56,17 +57,18 @@
 
 \vspace{5mm}
 
-	\textbf{Costos por 1000 litros}
+	\textbf{Costos y ganancias variables por 1000 litros}
 
-	\begin{tabular}{| c || c | c | c | c | c |}
+	\begin{tabular}{| c || c | c | c | c | c | c|}
 		\hline
-							& Precio de venta & Materia prima & Refinado & Fraccionado & Embalaje\\
+							& Precio de venta & Materia prima & Refinado & Fraccionado & Embalaje &
+							Ganancia\\
 		\hline
-		Aviones   & \$16.000        & \$4.000       & \$4.100  & \$1.000   & \$1.000   \\
+		Aviones   & \$16.000        & \$4.000       & \$4.100  & \$1.000   & \$1.000  & \$5.900 \\
 		\hline
-		Vehículos & \$8.000         & \$1.000       & \$3.000  & \$600     & \$500   \\
+		Vehículos & \$8.000         & \$1.000       & \$3.000  & \$600     & \$500 & \$2.900 \\
 		\hline
-		Keronsene & \$4.000         & \$500         & \$1.500  & \$400     & \$400 \\
+		Keronsene & \$4.000         & \$500         & \$1.500  & \$400     & \$400  & \$1.200 \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -78,42 +80,40 @@ vehículos y 6.000.000 litros de kerosene) y la ganancia (o pérdida) total de l
 
 \vspace{5mm}
 
-Los gastos de refinado y fraccionado van a ser prorrateados entre los tres combustibles producidos. Para un tipo de combustible, se modela la producción con variables $X_a, X_v, X_k$ para la producción de mil litros de combustible para aviones, vehículos y kerosene.
+Los gastos de refinado y fraccionado van a ser prorrateados entre los tres combustibles producidos. Para un tipo de combustible, se modela la producción con variables $X_i$ para la producción de mil litros de combustible con $i \in  \{a,v,k\}$ para aviones, vehículos y kerosene respectivamente.
 
-Hay costos variables $C_{ij}$ para procesar 1000 litros de combustible $i$ en el proceso $j$ . Con $j \in \{p, r, f, e\}$ para los procesos de obtener materia prima, refinado, fraccionado y embalaje.
+Teniendo en cuenta los costos variables y los precios de venta por cada 1000 litros de combustible, definimos $G_i$ la ganancia variable de dicha cantidad.
 
-Luego las etapas de refinado y fraccionado se comparten para los tres tipos de combustible. Se cuenta con un gasto fijo $G_i$ mensual y una disponiblididad máxima de producción medida en horas $H_{ij}$ horas que tardan 1000 litros de combustuble $i$ en el proceso $j$, con $j \in \{r, f\}$. El costo para producir $Xj$ miles de litros de combustible $j$ en un proceso $i$ se calcula como:
-
-$$
-G_i \frac{H_{ji} X_j}{H_{ai} X_a + H_{vi} X_v + H_{ki} X_k}
-$$
-
-Las etapas de embalaje son independientes del tipo de combustible. Notamos $G_i$ con $i \in \{a,v,k\}$ el costo fijo de operar el sector de embalaje para el combustible $i$.
-
-El costo total de producir 1000 litros de combustible $X_i$ es:
+Luego los costos fijos $F_j$ mensuales de refinado y fraccionado se comparten para los tres tipos de combustible. Siendo ademas $H_{ij}$ el tiempo de producción de 1000 litros de combustible $i$ en el proceso $j$, con $j \in \{r, f\}$. El costo para producir $X_i$ miles de litros de combustible $i$ en un proceso $j$ se calcula como:
 
 $$
-G_r \frac{H_{ir} X_i}{H_{ar} X_a + H_{vr} X_v + H_{kr} X_k} + G_f \frac{H_{ij} X_i}{H_{af} X_a + H_{vf} X_v + H_{kf} X_k} + G_i + C_{ir} X_i + C_{if} X_i + C_{ie} X_i + C_{ip} X_i
+\frac{F_j H_{ij} X_i}{H_{aj}X_a + H_{vj}X_v + H_{kj}X_k}
 $$
 
-Por último la ganancia obtenida con un combustible es el total obtenido con la venta del producto menos los costos de producirlo.
+Las etapa de embalaje es independiente para cada tipo de combustible. Notamos $E_i$ con $i \in \{a,v,k\}$ el costo fijo de operar el sector de embalaje para el combustible $i$.
 
-Para los valores planteados las ganancias se distrubuyen de la siguiente manera:
+Finalmente, el balance final se obtiene de restar a las ganancias variables, los costos prorroteados y costos de embalaje para cada tipo de combustible $i$, es decir:
+$$
+G_i X_i - \sum_{j\in\{r,f\}}{\frac{F_j H_{ij} X_i}{H_{aj}X_a + H_{vj}X_v + H_{kj}X_k}} \quad  - E_i
+$$
+
+\clearpage
 
 \begin{center}
-	\textbf{Ganancias totales}
+	\textbf{Balances finales}
+	\vspace{3mm}
 
 	\begin{tabular}{| c | c |}
 		\hline
-		&           Ganancia    \\
+		&           Balance    \\
 		\hline
-		Aviones   & -\$-5.365.789,5  \\
+		Aviones   & -\$365.790  \\
 		\hline
-		Vehículos & \$3.752.631,6 \\
+		Vehículos & \$3.752.632 \\
 		\hline
-		Kerosene  & \$1.963.157,9 \\
+		Kerosene  & \$1.963.158 \\
 		\hline
-		Total     & \$350.000\\
+		Total     & \$5.350.000\\
 		\hline
 	\end{tabular}
 \end{center}
@@ -122,10 +122,11 @@ Vemos que la empresa en total da ganancia, pero el combustible para aviones pér
 \section{}
 \textbf{Si la empresa no hubiese producido combustible para aviones manteniendo en los mismos valores los otros productos, ¿la ganancia de la compañía habría sido mejor? Suponer que se cierra el sector de embalaje de combustibles para aviones.}
 
-En ese caso, las ganancias netas sin los costos fijos de Vehículos y Kerosene serían las mismas, y al total de la empresa le restamos todos los costos fijos sin contar el embalaje de combustible para aviones. Haciendo la cuenta, nos quedaría la siguiente tabla:
+Haciendo la cuenta, nos quedaría la siguiente tabla:
 
 \begin{center}
 	\textbf{Ganancias totales}
+	\vspace{3mm}
 	
 	\begin{tabular}{| c | c |}
 		\hline
@@ -133,14 +134,17 @@ En ese caso, las ganancias netas sin los costos fijos de Vehículos y Kerosene s
 		\hline
 		Aviones   & \$0  \\
 		\hline
-		Vehículos & \$3.154.545,5 \\
+		Vehículos & \$3.154.545 \\
 		\hline
-		Kerosene  & \$1.245.454,5 \\
+		Kerosene  & \$1.245.455 \\
 		\hline
 		Total     & \$4.400.000\\
 		\hline
 	\end{tabular}
 \end{center}
+
+En ese caso se puede ver que la ganancia es menor, esto se debe a que los costos fijos de Vehículos y Kerosene siguen estando, quedan horas extra en las cuales se podría producir mas combustible, en el escenario anterior era combustible de avión que llegaba a cubrir el costo fijo de su embalaje y generaba unos $\$950.000$ extra, el valor que diferencia los resultados.
+
 
 \section{}
 \textbf{Y si hubiese aumentado lo máximo posible la producción de los otros productos? Suponer que se cierra el
@@ -161,8 +165,10 @@ Para eso formulamos el siguiente LP:
 donde $X_v$ son miles de litros de combustible para vehículos y  $X_k$ son miles de litros de kerosene. Los coeficientes de la función objetivo es el precio de venta cada 1000 litros de combustible menos los costos variables $C_{ij}$ mencionados anteriormente. Los costos fijos se le restan directamente a la función objetivo.
 
 El valor óptimo para la producción es de $X_v = 3000, X_k = 7000$. Expresado en miles de litros de combustible a producir. La ganancia de la empresa aumentaría con estos nuevos valores:
+\clearpage
 \begin{center}
 	\textbf{Ganancias totales}
+	\vspace{3mm}
 	
 	\begin{tabular}{| c | c |}
 		\hline
@@ -170,9 +176,9 @@ El valor óptimo para la producción es de $X_v = 3000, X_k = 7000$. Expresado e
 		\hline
 		Aviones   & \$0  \\
 		\hline
-		Vehículos & \$3.533.333,3 \\
+		Vehículos & \$3.533.333 \\
 		\hline
-		Kerosene  & \$2.066.666,7 \\
+		Kerosene  & \$2.066.667 \\
 		\hline
 		Total     & \$5.600.000\\
 		\hline
