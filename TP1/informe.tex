@@ -185,4 +185,63 @@ El valor óptimo para la producción es de $X_v = 3000, X_k = 7000$. Expresado e
 	\end{tabular}
 \end{center}
 
+\section{} %4
+\section{} %5
+
+\section*{Diccionario óptimo}
+
+Dado el método simplex en su forma matricial:
+\begin{tabular}{c}
+	$X_B = B^{-1}b - B^{-1}A_NX_N$ \\
+	\hline
+	$z = c_B B^{-1} b + (c_N - c_B B^{-1} A_N) X_N$
+\end{tabular}
+
+Nuestro diccionario óptimo va a tener a $X_a$, $X_v$, y $X_k$ como variables básicas porque toman valores no nulos en la solución óptima.
+
+También vemos que las restricciones $10 X_v + 6 X_k + 20 X_a \leq 80000$ (2) y $X_k \leq 7000$ (4) se cumplen por desigualdad estricta, entonces sus variables de holgura correspondientes van a ser mayores a 0 en la solución óptima.
+Siendo $X_4, \dots, X_8$ las variables de holgura correspondientes a las restricciones $1, \dots, 5$ respectivamente, esto significa que $X_5$ y $X_7$ son variables básicas.
+
+Entonces tenemos en la base óptima: 
+
+\[B = \begin{pmatrix}
+	5  & 3 & 10 & 0 & 0 \\
+	10 & 6 & 20 & 1 & 0 \\
+	2  & 0 & 0  & 0 & 0 \\
+	0  & 1 & 0  & 0 & 1 \\
+	0  & 0 & 4  & 0 & 0
+\end{pmatrix}\]
+Entonces su inversa es:
+\[B^{-1} = \begin{pmatrix}
+	0  & 0 &\frac{1}{2} & 0 & 0 \\
+	\frac{1}{3} & 0 & \frac{-5}{6} & 0 & \frac{-5}{6} \\
+	0  & 0 & 0  & 0 & \frac{1}{4} \\
+	-2 & 1 & 0  & 0 & 0 \\
+	\frac{-1}{3}  & 0 & \frac{5}{6}  & 1 & \frac{5}{6}
+\end{pmatrix}\]
+
+También tenemos $c_B = \begin{pmatrix} 5900 & 2900 & 1200 & 0 & 0 \end{pmatrix}, c_N = \begin{pmatrix} 0 & 0 & 0 \end{pmatrix}$, $A_N = \begin{pmatrix}
+	1 & 0 & 0 \\
+	0 & 0 & 0 \\
+	0 & 1 & 0 \\
+	0 & 0 & 0 \\
+	0 & 0 & 1 \\
+\end{pmatrix}$, $b = \begin{pmatrix} 
+3800 \\
+80000 \\
+6000 \\
+7000 \\
+4000 
+\end{pmatrix}$
+
+\section{} %6
+\section{} %7
+\section{} %8
+\section{} %9
+\textbf{Por otro lado, el gerente de compras propone cambiar algunos proveedores, lo que permitiría bajar el costo de la materia prima del aceite para vehículos de \$1000 a \$800 por cada 1000 litros procesados. ¿Cambiaría el plan de producción óptimo? Si es así, dar la nueva planificación óptima.}
+
+
+\section{} %10
+\section{} %11
+\section{} %12
 \end{document}
