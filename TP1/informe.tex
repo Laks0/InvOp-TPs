@@ -127,7 +127,7 @@ Haciendo la cuenta, nos quedaría la siguiente tabla:
 \begin{center}
 	\textbf{Ganancias totales}
 	\vspace{3mm}
-	
+
 	\begin{tabular}{| c | c |}
 		\hline
 		&           Ganancia    \\
@@ -169,7 +169,7 @@ El valor óptimo para la producción es de $X_v = 3000, X_k = 7000$. Expresado e
 \begin{center}
 	\textbf{Ganancias totales}
 	\vspace{3mm}
-	
+
 	\begin{tabular}{| c | c |}
 		\hline
 		&           Ganancia    \\
@@ -187,7 +187,6 @@ El valor óptimo para la producción es de $X_v = 3000, X_k = 7000$. Expresado e
 
 \section{} %4
 \section{} %5
-
 \section*{Diccionario óptimo}
 
 Dado el método simplex en su forma matricial:
@@ -202,7 +201,7 @@ Nuestro diccionario óptimo va a tener a $X_a$, $X_v$, y $X_k$ como variables b�
 También vemos que las restricciones $10 X_v + 6 X_k + 20 X_a \leq 80000$ (2) y $X_k \leq 7000$ (4) se cumplen por desigualdad estricta, entonces sus variables de holgura correspondientes van a ser mayores a 0 en la solución óptima.
 Siendo $X_4, \dots, X_8$ las variables de holgura correspondientes a las restricciones $1, \dots, 5$ respectivamente, esto significa que $X_5$ y $X_7$ son variables básicas.
 
-Entonces tenemos en la base óptima: 
+Entonces tenemos en la base óptima:
 
 \[B = \begin{pmatrix}
 	5  & 3 & 10 & 0 & 0 \\
@@ -220,18 +219,18 @@ Entonces su inversa es:
 	\frac{-1}{3}  & 0 & \frac{5}{6}  & 1 & \frac{5}{6}
 \end{pmatrix}\]
 
-También tenemos $c_B = \begin{pmatrix} 5900 & 2900 & 1200 & 0 & 0 \end{pmatrix}, c_N = \begin{pmatrix} 0 & 0 & 0 \end{pmatrix}$, $A_N = \begin{pmatrix}
+También tenemos $c_B = \begin{pmatrix} 2900 & 5900 & 1200 & 0 & 0 \end{pmatrix}, c_N = \begin{pmatrix} 0 & 0 & 0 \end{pmatrix}$, $A_N = \begin{pmatrix}
 	1 & 0 & 0 \\
 	0 & 0 & 0 \\
 	0 & 1 & 0 \\
 	0 & 0 & 0 \\
 	0 & 0 & 1 \\
-\end{pmatrix}$, $b = \begin{pmatrix} 
+\end{pmatrix}$, $b = \begin{pmatrix}
 3800 \\
 80000 \\
 6000 \\
 7000 \\
-4000 
+4000
 \end{pmatrix}$
 
 \section{} %6
@@ -240,6 +239,77 @@ También tenemos $c_B = \begin{pmatrix} 5900 & 2900 & 1200 & 0 & 0 \end{pmatrix}
 \section{} %9
 \textbf{Por otro lado, el gerente de compras propone cambiar algunos proveedores, lo que permitiría bajar el costo de la materia prima del aceite para vehículos de \$1000 a \$800 por cada 1000 litros procesados. ¿Cambiaría el plan de producción óptimo? Si es así, dar la nueva planificación óptima.}
 
+\vspace{5mm}
+
+Este cambio aumentaría \$200 nuestra ganancia por 1000 litros de combustible para vehículos. Cambiando $c_B$ a $\begin{pmatrix} \textbf{3100} & 5900 & 1200 & 0 & 0\end{pmatrix}$
+
+Esto nos daría un nuevo $c_B B^{-1} = \begin{pmatrix} \frac{500}{3} & 0 & \frac{3400}{3} & 0 & \frac{-350}{3} \end{pmatrix}$
+
+La nueva ganancia sería de $c_B B^{-1} b = 12\,666\,666.67$
+
+Para que la producción actual siga siendo óptima, hace falta que
+\[
+	c_N - c_B B^{-1} A_N = \begin{pmatrix} \frac{-500}{3} & \frac{-3400}{3} & \frac{350}{3} \end{pmatrix} \leq 0
+\]
+
+Vemos que el tercer coeficiente no básico en $z$ pasó a ser positivo, entonces la base ya no es óptima y $X_8$ tiene que entrar a la base.
+
+\[
+	d = B^{-1}a_3 = \begin{pmatrix} 0 \\ \frac{-5}{6} \\ \frac{1}{4} \\ 0 \\ \frac{5}{6} \end{pmatrix}
+\]
+
+Buscamos el máximo $t$ tal que:
+\[
+	B^{-1}b - td =
+	\begin{pmatrix}
+		3000 \\
+		\frac{1300}{3} \\
+		1000 \\
+		4000 \\
+		\frac{8000}{3}
+	\end{pmatrix}
+	- t
+	\begin{pmatrix} 0 \\
+		\frac{-5}{6} \\
+		\frac{1}{4} \\
+		0 \\
+		\frac{5}{6}
+	\end{pmatrix}
+	\geq 0
+\]
+
+Lo que nos deja con $t \leq 4\,000$ (tercera fila) y $t \leq 3\,200$ (quinta fila). La cota más ajustada la impone la fila de $X_7$, entonces sale de la base.
+
+Cambiando las columnas de $X_8$ y $X_7$ nos queda el diccionario con:
+\[B = \begin{pmatrix}
+	5  & 3 & 10 & 0 & 0 \\
+	10 & 6 & 20 & 1 & 0 \\
+	2  & 0 & 0  & 0 & 0 \\
+	0  & 1 & 0  & 0 & 0 \\
+	0  & 0 & 4  & 0 & 1
+\end{pmatrix} \Rightarrow B^{-1} = \begin{pmatrix}
+	0 & 0 & \frac{1}{2} & 0 & 0 \\
+	0 & 0 & 0 & 1 & 0 \\
+	\frac{1}{10} & 0 & \frac{-1}{4} & \frac{-3}{10} & 0 \\
+	-2 & 1 & 0 & 0 & 0 \\
+	\frac{-2}{5} & 0 & 1 & \frac{6}{5} & 1
+\end{pmatrix}\]
+
+\[
+	A_N = \begin{pmatrix}
+		1 & 0 & 0 \\
+		0 & 0 & 0 \\
+		0 & 1 & 0 \\
+		0 & 0 & 1 \\
+		0 & 0 & 0 \\
+	\end{pmatrix},
+	c_B = \begin{pmatrix} 3100 & 5900 & 1200 & 0 & 0 \end{pmatrix},
+	c_N = \begin{pmatrix} 0 & 0 & 0 \end{pmatrix}
+\]
+
+Queda que $c_N - c_B B^{-1} A_N = \begin{pmatrix} -120 & -2\,650 & -2\,740 \end{pmatrix} \leq 0$ entonces el nuevo diccionario es óptimo.
+
+Se producen $(B^{-1}b)_1 = 3000$ miles de litros de combustible para vehículos, $(B^{-1}b)_2 = 7000$ miles de litros de combustible para kerosene, y $(B^{-1}b)_3 = 200$ litros de combustible para aviones.
 
 \section{} %10
 \section{} %11
