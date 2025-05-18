@@ -186,7 +186,7 @@ El valor óptimo para la producción es de $X_v = 3000, X_k = 7000$. Expresado e
 \end{center}
 
 \section{} %4
-
+\textbf{Determinar la cantidad óptima de producción mensual de cada producto para maximizar la ganancia de la compañía.}
 Esto se puede lograr extendiendo el LP del ejercicio anterior con una columna para la variable $X_a$, representando la cantidad (en miles de litros) de combustible para aviones a producir. También se restan los costos fijos de operar el sector de embalaje para combustible de aviones en la función objetivo.
 
 \begin{align*}
@@ -203,6 +203,7 @@ Esto se puede lograr extendiendo el LP del ejercicio anterior con una columna pa
 El valor óptimo para este LP es $X_a = 1000, X_v = 3000,  X_k = 4333.33$. Estas son las cantidades, expresadas en miles de litros de combustible, que debe producir la empresa para obtener el mayor beneficio posible. 
 
 \section{} %5
+\textbf{Indicar al director estas cantidades, el costo por 1000 litros de cada producto (prorrateando los costos fijos) y la ganancia total de la empresa.}
 Utilizando las cantidades obtenidas en la solución óptima del LP del punto anterior, los costos de descomponen de la siguiente manera:
 
 \begin{table}[h!]
@@ -268,83 +269,89 @@ También tenemos $c_B = \begin{pmatrix} 2900 & 1200 & 5900 & 0 & 0 \end{pmatrix}
 4000
 \end{pmatrix}$
 
+Como referencia para utilizar en los siguientes ejercicios la solución óptima del problema dual $y=c_B B^{-1}$ es:
+
+$$
+y^* = \begin{pmatrix}
+	400 \\
+	0 \\
+	450 \\
+	0 \\
+	475
+\end{pmatrix}
+$$
+
 \section{} %6
+\textbf{Al escuchar esto, el gerente de producción propuso aumentar la producción contratando 500 horas extras al mes del personal del sector de fraccionado. Asesorar al director sobre esta propuesta.}
+Para esto hay que encontrar el rango de $b_2$ (cota correspondiente a la restricción de fraccionado) para que el diccionario ótpimo actual mantenga factibilidad. Sea $b$ el vector con $b_2$ definido como una variable libre:
+
+$$
+b = \begin{pmatrix}
+	3800 \\
+	b_2 \\
+	6000 \\
+	7000 \\
+	4000
+\end{pmatrix}
+$$
+Hay que encontrar los valores tal que $B^{-1}b \geq 0$.
+$$
+B^{-1}b = \begin{pmatrix}
+	3000 \\
+	\frac{13000}{3} \\
+	1000 \\
+	b_2 - 76000 \\
+	\frac{8000}{3}
+\end{pmatrix}  \geq 0 \iff b_2 \geq 76000
+$$
+
+Este aumento mantiene factibilidad de la base óptima. El cambio en la ganancia luegeo del aumento es 
+$$y^*_2(b_2 - 80000) = 0$$ por lo que no resulta conveniente aumentar la cantidad de horas a este departamento.
+
 \section{} %7
+\textbf{Otra propuesta del gerente es contratar 1000 horas extras al mes del personal del sector de refinado. Indicar al director si es conveniente aceptar esta nueva propuesta y hasta cuánto debería pagar por cada hora extra de este sector.}
+Para esto hay que encontrar el rango de $b_1$ (cota correspondiente a la restricción de refinado) para que el diccionario ótpimo actual mantenga factibilidad. Sea $b$ el vector con $b_1$ definido como una variable libre:
+$$
+b = \begin{pmatrix}
+	b_1 \\
+	80000 \\
+	6000 \\
+	7000 \\
+	4000
+\end{pmatrix}
+$$
+Hay que encontrar los valores tal que $B^{-1}b \geq 0$.
+$$
+B^{-1}b = 
+\begin{pmatrix}
+	3000 \\
+	\frac{b_1 - 25000}{3} \\
+	1000 \\
+	80000 - 2b_1 \\
+	\frac{46000 - b_1}{3}
+\end{pmatrix} \geq 0 \iff 25000 \leq b_1 \leq 40000
+$$
+Este aumento mantiene factibilidad en la base actual. El aumento en la ganancia (sin contar el costo de cada hora) luegeo de contratar $1000$ horas extra es $$y^*_1(b_1 - 38000) = 400 \times 1000 = 400000$$ 
+por lo que resulta conveniente aumentar la cantidad de horas asignadas al sector de refinado. Utilizando al óptimo dual como referencia se debería pagar hasta $\$400$ por hora extra de refinado contratada.
 \section{} %8
+\textbf{Si el director decide pagar por hora extra la mitad del valor máximo indicado en el punto anterior, ¿en cuánto aumentaría la ganancia mensual de la compañía?}
+Si se decide pagar $\$200$ por hora extra se gastarán $200 \times 1000 = \$200000$ adicionales. Esto resulta en una ganancia mensual adicional de $\$400000 - \$200000 = \$200000$.
+
 \section{} %9
 \textbf{Por otro lado, el gerente de compras propone cambiar algunos proveedores, lo que permitiría bajar el costo de la materia prima del aceite para vehículos de \$1000 a \$800 por cada 1000 litros procesados. ¿Cambiaría el plan de producción óptimo? Si es así, dar la nueva planificación óptima.}
 
 \vspace{5mm}
 
-Este cambio aumentaría \$200 nuestra ganancia por 1000 litros de combustible para vehículos. Cambiando $c_B$ a $\begin{pmatrix} \textbf{3100} & 5900 & 1200 & 0 & 0\end{pmatrix}$
+Este cambio aumentaría \$200 nuestra ganancia por 1000 litros de combustible para vehículos. Cambiando $c_B$ a $\begin{pmatrix} \textbf{3100} & 1200 & 5900 & 0 & 0\end{pmatrix}$
 
-Esto nos daría un nuevo $c_B B^{-1} = \begin{pmatrix} \frac{500}{3} & 0 & \frac{3400}{3} & 0 & \frac{-350}{3} \end{pmatrix}$
+La nueva ganancia sería de $c_B B^{-1} b = \$20400000$
 
-La nueva ganancia sería de $c_B B^{-1} b = 12\,666\,666.67$
-
-Para que la producción actual siga siendo óptima, hace falta que
+Para verificar que la producción actual siga siendo óptima, hace falta que
 \[
-	c_N - c_B B^{-1} A_N = \begin{pmatrix} \frac{-500}{3} & \frac{-3400}{3} & \frac{350}{3} \end{pmatrix} \leq 0
+	c_N - c_B B^{-1} A_N = \begin{pmatrix} -400 & -550 & -475 \end{pmatrix} \leq 0
 \]
 
-Vemos que el tercer coeficiente no básico en $z$ pasó a ser positivo, entonces la base ya no es óptima y $X_8$ tiene que entrar a la base.
-
-\[
-	d = B^{-1}a_3 = \begin{pmatrix} 0 \\ \frac{-5}{6} \\ \frac{1}{4} \\ 0 \\ \frac{5}{6} \end{pmatrix}
-\]
-
-Buscamos el máximo $t$ tal que:
-\[
-	B^{-1}b - td =
-	\begin{pmatrix}
-		3000 \\
-		\frac{1300}{3} \\
-		1000 \\
-		4000 \\
-		\frac{8000}{3}
-	\end{pmatrix}
-	- t
-	\begin{pmatrix} 0 \\
-		\frac{-5}{6} \\
-		\frac{1}{4} \\
-		0 \\
-		\frac{5}{6}
-	\end{pmatrix}
-	\geq 0
-\]
-
-Lo que nos deja con $t \leq 4\,000$ (tercera fila) y $t \leq 3\,200$ (quinta fila). La cota más ajustada la impone la fila de $X_7$, entonces sale de la base.
-
-Cambiando las columnas de $X_8$ y $X_7$ nos queda el diccionario con:
-\[B = \begin{pmatrix}
-	5  & 3 & 10 & 0 & 0 \\
-	10 & 6 & 20 & 1 & 0 \\
-	2  & 0 & 0  & 0 & 0 \\
-	0  & 1 & 0  & 0 & 0 \\
-	0  & 0 & 4  & 0 & 1
-\end{pmatrix} \Rightarrow B^{-1} = \begin{pmatrix}
-	0 & 0 & \frac{1}{2} & 0 & 0 \\
-	0 & 0 & 0 & 1 & 0 \\
-	\frac{1}{10} & 0 & \frac{-1}{4} & \frac{-3}{10} & 0 \\
-	-2 & 1 & 0 & 0 & 0 \\
-	\frac{-2}{5} & 0 & 1 & \frac{6}{5} & 1
-\end{pmatrix}\]
-
-\[
-	A_N = \begin{pmatrix}
-		1 & 0 & 0 \\
-		0 & 0 & 0 \\
-		0 & 1 & 0 \\
-		0 & 0 & 1 \\
-		0 & 0 & 0 \\
-	\end{pmatrix},
-	c_B = \begin{pmatrix} 3100 & 5900 & 1200 & 0 & 0 \end{pmatrix},
-	c_N = \begin{pmatrix} 0 & 0 & 0 \end{pmatrix}
-\]
-
-Queda que $c_N - c_B B^{-1} A_N = \begin{pmatrix} -120 & -2\,650 & -2\,740 \end{pmatrix} \leq 0$ entonces el nuevo diccionario es óptimo.
-
-Se producen $(B^{-1}b)_1 = 3000$ miles de litros de combustible para vehículos, $(B^{-1}b)_2 = 7000$ miles de litros de combustible para kerosene, y $(B^{-1}b)_3 = 200$ litros de combustible para aviones.
+Todos los coeficientes de $z$ son $< 0$ por lo que el diccionario actual sigue siendo óptimo. No hay que cambiar el plan de producción.
 
 \section{} %10
 \section{} %11
