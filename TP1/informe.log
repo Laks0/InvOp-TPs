@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2025.3.27)  18 MAY 2025 20:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2025.3.27)  18 MAY 2025 20:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -283,7 +283,7 @@ Overfull \hbox (10.56734pt too wide) in paragraph at lines 63--75
 [4]
 
 [5]
-Overfull \hbox (27.05617pt too wide) in paragraph at lines 446--455
+Overfull \hbox (27.05617pt too wide) in paragraph at lines 449--458
 []\OT1/cmr/m/n/10 Agregando $\OML/cmm/m/it/10 X[]$ \OT1/cmr/m/n/10 co-mo ^^Sult
 i-ma va-ria-ble, $\OML/cmm/m/it/10 A[]$ \OT1/cmr/m/n/10 pa-sar^^S^^Pa a ser: $[
 ]$, y $\OML/cmm/m/it/10 c[] \OT1/cmr/m/n/10 = []$ 
@@ -305,7 +305,7 @@ L3 programming layer <2025-01-18>
 Here is how much of TeX's memory you used:
  4241 strings out of 475109
  64901 string characters out of 5765325
- 475567 words of memory out of 5000000
+ 476567 words of memory out of 5000000
  27213 multiletter control sequences out of 15000+600000
  564283 words of font info for 57 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
@@ -325,7 +325,7 @@ exmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts
 amsfonts/cm/cmtt8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/symbol
 s/msbm10.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></
 usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on informe.pdf (8 pages, 574469 bytes).
+Output written on informe.pdf (8 pages, 574444 bytes).
 PDF statistics:
  124 PDF objects out of 1000 (max. 8388607)
  75 compressed objects within 1 object stream
