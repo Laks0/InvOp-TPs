@@ -4,6 +4,7 @@
 \usepackage{a4wide} % márgenes un poco más anchos que lo usual
 \usepackage{caratula}
 \usepackage{amsmath}
+\usepackage{amssymb}
 
 \begin{document}
 
@@ -200,7 +201,7 @@ Esto se puede lograr extendiendo el LP del ejercicio anterior con una columna pa
 	& X_a \geq 0,\quad X_v \geq 0,\quad X_k \geq 0
 \end{align*}
 
-El valor óptimo para este LP es $X_a = 1000, X_v = 3000,  X_k = 4333.33$. Estas son las cantidades, expresadas en miles de litros de combustible, que debe producir la empresa para obtener el mayor beneficio posible. 
+El valor óptimo para este LP es $X_a = 1000, X_v = 3000,  X_k = 4333.33$. Estas son las cantidades, expresadas en miles de litros de combustible, que debe producir la empresa para obtener el mayor beneficio posible.
 
 \section{} %5
 \textbf{Indicar al director estas cantidades, el costo por 1000 litros de cada producto (prorrateando los costos fijos) y la ganancia total de la empresa.}
@@ -216,12 +217,12 @@ Utilizando las cantidades obtenidas en la solución óptima del LP del punto ant
 		Vehículos & \$ 3752631.6 & \$ 6749.1 \\
 		Kerosene  & \$ 1278947.4 & \$ 3704.9 \\
 		\hline
-		\textbf{Total} &\$ 6300000 & \\
+		\textbf{Total} & $\$6\,300\,000$& \\
 		\hline
 	\end{tabular}
 \end{table}
 
-La ganancia de un sector se calcula como el ingreso total de dinero por ventas menos el costo de producción (incluyendo prorrateo). El costo por 1000 litros es el costo total del sector dividio la cantidad (en miles de litros) de combustible producido. 
+La ganancia de un sector se calcula como el ingreso total de dinero por ventas menos el costo de producción (incluyendo prorrateo). El costo por 1000 litros es el costo total del sector dividio la cantidad (en miles de litros) de combustible producido.
 
 \section*{Diccionario óptimo}
 
@@ -262,7 +263,7 @@ También tenemos $c_B = \begin{pmatrix} 2900 & 1200 & 5900 & 0 & 0 \end{pmatrix}
 	0 & 0 & 0 \\
 	0 & 0 & 1 \\
 \end{pmatrix}$, $b = \begin{pmatrix}
-3800 \\
+38000 \\
 80000 \\
 6000 \\
 7000 \\
@@ -305,7 +306,7 @@ B^{-1}b = \begin{pmatrix}
 \end{pmatrix}  \geq 0 \iff b_2 \geq 76000
 $$
 
-Este aumento mantiene factibilidad de la base óptima. El cambio en la ganancia luegeo del aumento es 
+Este aumento mantiene factibilidad de la base óptima. El cambio en la ganancia luegeo del aumento es
 $$y^*_2(b_2 - 80000) = 0$$ por lo que no resulta conveniente aumentar la cantidad de horas a este departamento.
 
 \section{} %7
@@ -322,7 +323,7 @@ b = \begin{pmatrix}
 $$
 Hay que encontrar los valores tal que $B^{-1}b \geq 0$.
 $$
-B^{-1}b = 
+B^{-1}b =
 \begin{pmatrix}
 	3000 \\
 	\frac{b_1 - 25000}{3} \\
@@ -331,7 +332,7 @@ B^{-1}b =
 	\frac{46000 - b_1}{3}
 \end{pmatrix} \geq 0 \iff 25000 \leq b_1 \leq 40000
 $$
-Este aumento mantiene factibilidad en la base actual. El aumento en la ganancia (sin contar el costo de cada hora) luegeo de contratar $1000$ horas extra es $$y^*_1(b_1 - 38000) = 400 \times 1000 = 400000$$ 
+Este aumento mantiene factibilidad en la base actual. El aumento en la ganancia (sin contar el costo de cada hora) luegeo de contratar $1000$ horas extra es $$y^*_1(b_1 - 38000) = 400 \times 1000 = 400000$$
 por lo que resulta conveniente aumentar la cantidad de horas asignadas al sector de refinado. Utilizando al óptimo dual como referencia se debería pagar hasta $\$400$ por hora extra de refinado contratada.
 \section{} %8
 \textbf{Si el director decide pagar por hora extra la mitad del valor máximo indicado en el punto anterior, ¿en cuánto aumentaría la ganancia mensual de la compañía?}
@@ -344,7 +345,7 @@ Si se decide pagar $\$200$ por hora extra se gastarán $200 \times 1000 = \$2000
 
 Este cambio aumentaría \$200 nuestra ganancia por 1000 litros de combustible para vehículos. Cambiando $c_B$ a $\begin{pmatrix} \textbf{3100} & 1200 & 5900 & 0 & 0\end{pmatrix}$
 
-La nueva ganancia sería de $c_B B^{-1} b = \$20400000$
+La nueva ganancia sería de $c_B B^{-1} b - 13\,500\,000 = \$6\,900\,000$
 
 Para verificar que la producción actual siga siendo óptima, hace falta que
 \[
@@ -354,6 +355,154 @@ Para verificar que la producción actual siga siendo óptima, hace falta que
 Todos los coeficientes de $z$ son $< 0$ por lo que el diccionario actual sigue siendo óptimo. No hay que cambiar el plan de producción.
 
 \section{} %10
+\textbf{Y si se modificara el proceso de refinado de kerosene para bajar de \$1500 a \$900 por cada 1000 litros procesado, ¿cambiaría el plan óptimo? Si es así, dar la nueva planificación óptima.}
+
+\vspace{5mm}
+
+Reducir los costos de refinado aumentaría la ganancia de kerosene por mil litros en \$600, y daría un nuevo $c_B = \begin{pmatrix}
+	2900 & \textbf{2800} & 5900 & 0 & 0
+\end{pmatrix}$.
+
+Si vemos los nuevos coeficientes de las variables no básicas en $z$, queda:
+\[
+	c_N - c_B B^{-1} A_N = \begin{pmatrix}
+		\frac{-2800}{3} & \frac{2650}{3} & \frac{2575}{3}
+\end{pmatrix}
+\]
+
+Como no todos los valores son negativos, hay variables candidatas a entrar a la base y el diccionario actual no es óptimo. %Podemos partir de este diccionario y seguir los pasos de simplex para encontrar un nuevo óptimo. Las variables candidatas a entrar a la base son $X_6$ y $X_8$.
+
+%Elegimos $X_6$, entonces necesitamos encontrar $d$ tal que $Bd = a_6$.
+%\[
+%	d = B^{-1} a_6 = \begin{pmatrix}
+%		\frac{1}{2} &
+%		\frac{-5}{6} &
+%		0 &
+%		0 &
+%		\frac{5}{6}
+%	\end{pmatrix}^t
+%\]
+%
+%Ahora buscamos la columna que le imponga a $t$ la restricción más ajustada para que:
+%\[
+%	B^{-1}b - td = \begin{pmatrix}
+%		3\,000 - \frac{t}{2} &
+%		\frac{13\,000}{3} + \frac{5t}{6} &
+%		1\,000 &
+%		4\,000 &
+%		\frac{8\,000}{3} + \frac{5t}{6}
+%	\end{pmatrix}^t \geq 0
+%\]
+%
+%Que claramente se cumple con $t \leq 6\,000$, cota que impone la columna de $X_v$, que va a ser la variable que salga de la base. Cambiando las columnas de $X_v$ y $X_6$, nos queda.
+%
+%\[
+%	A_N = \begin{pmatrix}
+%		5  & 1 & 0 \\
+%		10 & 0 & 0 \\
+%		2  & 0 & 0 \\
+%		0  & 0 & 0 \\
+%		0  & 0 & 1 \\
+%	\end{pmatrix},
+%	B = \begin{pmatrix}
+%		3 & 10 & 0 & 0 & 0 \\
+%		6 & 20 & 1 & 0 & 0 \\
+%		0 & 0  & 0 & 0 & 1 \\
+%		1 & 0  & 0 & 1 & 0 \\
+%		0 & 4  & 0 & 0 & 0
+%	\end{pmatrix} \Rightarrow
+%	B^{-1} = \begin{pmatrix}
+%		\frac{1}{3} & 0 & 0 & 0 & \frac{-5}{6} \\
+%		0           & 0 & 0 & 0 & \frac{1}{4} \\
+%		-2 & 1 & 0 & 0 & 0 \\
+%		\frac{-1}{3} & 0 & 0 & 1 & \frac{5}{6} \\
+%		0 & 0 & 1 & 0 & 0
+%	\end{pmatrix}
+%\]
+%\[
+%	c_B = \begin{pmatrix}
+%		2800 & 5900 & 0 & 0 & 0
+%	\end{pmatrix},
+%	c_N = \begin{pmatrix}
+%		2900 & 0 & 0
+%	\end{pmatrix}
+%\]
+%
+%Lo que deja un nuevo $c_N - c_B B^{-1} A_N = \begin{pmatrix}
+%	-5300/3 -2800/3 2575/3
+%\end{pmatrix}
+
 \section{} %11
+\textbf{La empresa está evaluando comenzar a procesar gasoil. El tiempo requerido para refinar 1000 litros de gasoil es de 4 horas, mientras que para fraccionarlos son necesarias 8 horas y para su embalaje 1.5 horas. El costo de la materia prima para mil litros de gasoil es de \$4000, el de refinado de \$4100, el de fraccionado de \$1000. El embalaje de gasoil lo realizaría el sector de embalaje de kerosene. ¿Cuál debería ser el menor precio de venta de los 1000 litros de gasoil para que su producción sea conveniente para la empresa?}
+
+\vspace{5mm}
+
+Estaríamos agregando una variable $X_g$ que represente el gasoil procesado en miles de litros.
+
+Se agregaría con coeficiente 4 a la restricción de refinado, 8 a la restricción de fraccionado y 8 a la de embalaje de kerosene. Como no se abre un sector nuevo, los costos fijos siguen igual, y el coeficiente en la función objetivo de $X_g$ sería $c_g - 4\,000 - 4\,100 - 1\,000$, donde $c_g$ es el precio de venta por 1000 litros de gasoil, al que le tenemos que restar los costos por 1000 litros.
+
+Para analizar cuándo es conveniente producir gasoil, agregamos a $X_g$ a las variables no básicas, y analizar cuándo su coeficiente en $z$ es positivo.
+
+Agregando $X_g$ como última variable, $A_N$ pasaría a ser: $\begin{pmatrix}
+	1 & 0 & 0 & 4 \\
+	0 & 0 & 0 & 8 \\
+	0 & 1 & 0 & 0 \\
+	0 & 0 & 0 & 8 \\
+	0 & 0 & 1 & 0 \\
+\end{pmatrix}$, y $c_N = \begin{pmatrix}
+	0 & 0 & 0 & c_g - 9\,100
+\end{pmatrix}$
+
+Para que convenga producir $X_g$ haría falta que:
+
+\[
+	(c_N - c_B B^{-1} A_N)_4 = c_{N_4} - c_B B^{-1}a_4 = c_g - 9100 - y^* a_4 = c_g - 10\,700 > 0
+\]
+
+Entonces hace falta ponerle un precio de venta mayor a $\$10\,700$ por mil litros para que tenga sentido producir gasoil.
+
 \section{} %12
+
+\textbf{La empresa va a agregar un control de calidad a todos sus productos. Controlar los 1000 litros de combustible para aviones requiere 5 horas, los de combustible para vehículos 3 horas y 2 horas los 1000 litros de kerosene. Si el sector de control de calidad dispone de 20000 horas mensuales, ¿cambiaría el plan óptimo? Si es así, dar la nueva planificación óptima.}
+
+\vspace{5mm}
+
+Esto implica agregar al sistema una restricción $3X_v + 2X_k + 5X_a \leq 20\,000$, y por lo tanto también una nueva variable de holgura $X_9$ correspondiente. Agregándola a las variables básicas, nos quedaría:
+
+\[
+	A_N = \begin{pmatrix}
+		1 & 0 & 0 \\
+		0 & 0 & 0 \\
+		0 & 1 & 0 \\
+		0 & 0 & 0 \\
+		0 & 0 & 1 \\
+		0 & 0 & 0 \\
+	\end{pmatrix},
+	B = \begin{pmatrix}
+		5  & 3 & 10 & 0 & 0 & 0\\
+		10 & 6 & 20 & 1 & 0 & 0\\
+		2  & 0 & 0  & 0 & 0 & 0\\
+		0  & 1 & 0  & 0 & 1 & 0\\
+		0  & 0 & 4  & 0 & 0 & 0\\
+		3  & 2 & 5  & 0 & 0 & 1\\
+	\end{pmatrix},
+	b = \begin{pmatrix}
+		38000 \\
+		80000 \\
+		6000 \\
+		7000 \\
+		4000 \\
+		20\,000
+	\end{pmatrix}
+\]
+
+Los valores de las variables básicas serían
+\[
+	B^{-1} b = \begin{pmatrix}
+		3000 & -5300 & 1000 & 61800 & 12300 & 16600
+	\end{pmatrix}^t \ngeq 0
+\]
+
+Entonces nuestro diccionario actual es inválido, y necesitamos usar simplex para encontrar un nuevo óptimo.
+
 \end{document}
