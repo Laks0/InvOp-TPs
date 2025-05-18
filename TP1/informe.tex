@@ -186,7 +186,42 @@ El valor óptimo para la producción es de $X_v = 3000, X_k = 7000$. Expresado e
 \end{center}
 
 \section{} %4
+
+Esto se puede lograr extendiendo el LP del ejercicio anterior con una columna para la variable $X_a$, representando la cantidad (en miles de litros) de combustible para aviones a producir. También se restan los costos fijos de operar el sector de embalaje para combustible de aviones en la función objetivo.
+
+\begin{align*}
+	\text{Max} \quad & 2900 X_v + 1200 X_k + 5900 X_a  - 13\,500\,000 \\
+	\text{Subject to} \quad
+	& 5 X_v + 3 X_k + 10 X_a \leq 38\,000 \quad \text{(restricciones sobre el refinado)} \\
+	& 10 X_v + 6 X_k + 20 X_a \leq 80\,000 \quad \text{(restricciones sobre el fraccionado)} \\
+	& 2 X_v \leq 6\,000 \quad \text{(restricciones sobre el embalaje de combustible para vehículos)}\\
+	& X_k \leq 7\,000 \quad \text{(restricciones sobre el embalaje de kerosene)}\\
+	& 4 X_a \leq 4\,000 \quad \text{(restricciones sobre el embalaje de combustible para aviones)} \\
+	& X_a \geq 0,\quad X_v \geq 0,\quad X_k \geq 0
+\end{align*}
+
+El valor óptimo para este LP es $X_a = 1000, X_v = 3000,  X_k = 4333.33$. Estas son las cantidades, expresadas en miles de litros de combustible, que debe producir la empresa para obtener el mayor beneficio posible. 
+
 \section{} %5
+Utilizando las cantidades obtenidas en la solución óptima del LP del punto anterior, los costos de descomponen de la siguiente manera:
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|l|r|r|}
+		\hline
+		\textbf{} & \textbf{Ganancia} & \textbf{Costo por 1000 litros} \\
+		\hline
+		Aviones   & \$ 1268421 & \$ 14731.6 \\
+		Vehículos & \$ 3752631.6 & \$ 6749.1 \\
+		Kerosene  & \$ 1278947.4 & \$ 3704.9 \\
+		\hline
+		\textbf{Total} &\$ 6300000 & \\
+		\hline
+	\end{tabular}
+\end{table}
+
+La ganancia de un sector se calcula como el ingreso total de dinero por ventas menos el costo de producción (incluyendo prorrateo). El costo por 1000 litros es el costo total del sector dividio la cantidad (en miles de litros) de combustible producido. 
+
 \section*{Diccionario óptimo}
 
 Dado el método simplex en su forma matricial:

@@ -1,4 +1,4 @@
-Max 5900 Xa + 2900 Xv + 1200 Xk - 13500000
+Max 2900 Xv + 1200 Xk + 5900 Xa - 13500000
 
 Subject to
 5 Xv + 3 Xk + 10 Xa  <= 38000 ; refinado

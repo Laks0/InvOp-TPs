@@ -99,7 +99,27 @@ print("Ganancia vehiculo:", ganancia_vehiculo, "Costo vehiculo: ", costo_vehicul
 print("Ganancia kerosene:", ganancia_kerosene, "Costo kerosene: ", costo_kerosene())
 print("Total: ", ganancia_kerosene + ganancia_vehiculo)
 
-# costo_amortizado_refinado_aviones = 5000000 * ((10 * Xa) / (10 * Xa + 5 * Xv + 3 * Xk)) + 4100 * Xa
+# =============================================================================
+# Ejercicio 4
+# =============================================================================
+X_aviones = 1000
+X_vehiculos = 3000
+X_kerosene = 4333.333333
+
+gasto_fijo_refinado = 5_000_000
+gasto_fijo_fraccionado = 5_000_000
+gasto_fijo_embalaje_aviones = 2_000_000
+gasto_fijo_embalaje_vehiculos = 1_000_000
+gasto_fijo_embalaje_kerosene = 500_000
+
+ganancia_avion = 16000 * X_aviones - costo_avion()
+ganancia_vehiculo = 8000 * X_vehiculos - costo_vehiculo()
+ganancia_kerosene = 4000 * X_kerosene - costo_kerosene()
 
 
+print('-'*10 + 'Ejercicio 4' + '-'*10)
 
+print("Ganancia avion:", ganancia_avion, "Costo avion (x1000 litros): ", costo_avion() /X_aviones)
+print("Ganancia vehiculo:", ganancia_vehiculo, "Costo vehiculo (x1000 litros): ", costo_vehiculo() / X_vehiculos)
+print("Ganancia kerosene:", ganancia_kerosene, "Costo kerosene (x1000 litros): ", costo_kerosene() / X_kerosene)
+print("Total: ", ganancia_avion + ganancia_kerosene + ganancia_vehiculo)
