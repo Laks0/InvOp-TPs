@@ -1,0 +1,83 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{a4wide} % márgenes un poco más anchos que lo usual
+\usepackage{caratula}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+	\titulo{TP2}
+
+	\fecha{\today}
+
+	\materia{Introducción a la Investigación Operativa y Optimización}
+
+	\integrante{Laks, Joaquín}{425/22}{laksjoaquin@gmail.com}
+	\integrante{Szabo, Jorge}{1683/21}{jorgecszabo@gmail.com}
+	\integrante{Wilders Azara, Santiago}{350/19}{santiago199913@gmail.com}
+
+	\maketitle
+
+	Basado en Miller, Tucker, y Zemlin
+
+	Dada un cliente $i$ definimos $D_i$ como los clientes a distancia menor a $dist\_max$ de $i$.
+
+	\[
+		x_{ij} = \begin{cases}
+			1 & \text{si desde el cliente $v_i$ el camión se mueve al cliente $v_j$}\\
+			0 & \text{c.c.}
+		\end{cases}
+	\]
+	\[
+		u_{i} = \text{posición del cliente $i$ en el circuito del camión (no importa cuando el camión no pasa)}
+	\]
+	\[
+		b_{ij} = \begin{cases}
+			1 & \text{si se envió un repartidor en bicicleta desde $v_i$ hasta $v_j$}\\
+			0 & \text{c.c}\\
+		\end{cases}
+	\]
+
+	$r_{ij}$ solo está definida para $j \in D_i$, en la formulación queda más cómodo escribirl como si estuviera definido para todas las parejas pero se pueden interpretar $r_{ij}$ inválidos como constantes 0.
+
+	También contamos con el dato de entrada:
+
+	\[
+		r_{i} = \begin{cases}
+			1 & \text{si al cliente $v_i$ se le entrega un producto que necesita refrigeración}\\
+			0 & \text{c.c}\\
+		\end{cases}
+	\]
+
+	Con $n = cant\_clientes$, buscamos:
+
+	\[
+		\text{Min } \sum_{ \begin{tabular}{c}
+				$v_i, v_j \in V$ \\
+				$ i \neq j$
+		\end{tabular}
+		} c_{ij} x_{ij} + costo\_repartidor\,b_{ij}
+	\]
+
+	s.a.
+
+	\[
+	\begin{array}{l l l}
+		\sum_{j \neq i} x_{ji} + \sum_{j \neq i} b_{ji} = 1 & \forall v_i \in V & \text{a toda ciudad se entra una vez, por camión o bicicleta} \\
+		\\
+		\sum_{j \neq i} x_{ij} = \sum_{j\neq i} x_{ji} & \forall v_i \in V & \text{si se entró en camión, se sale por camión} \\
+		\\
+		1 - \sum_{j \neq i} b_{ji} \geq \sum_{j\in D_i} b_{ij} + \sum_{j \neq i} x_{ij} & \forall v_i \in V & \text{si se entra en bicicleta, no se sale de ninguna forma} \\
+		\\
+		\sum_{j \in D_i} b_{ij} r_j \leq 1 & \forall v_i \in V & \text{ningún repartidor tiene más de un refrigerado} \\
+		\\
+		u_i - u_j + (n - 1) x_{ij} \leq n - 2 & \forall v_i \neq v_j \in V - \{a\} & \text{continuidad} \\
+		\\
+		u_1 = 0, 1 \leq u_i \leq n-1 & \forall v_i \in V - \{v_1\} \\
+		\\
+		x_{ij}, b_{ij} \in \{0,1\}, u_i \in \mathbb{Z}_{\geq 0}
+	\end{array}
+	\]
+\end{document}
