@@ -1,14 +1,33 @@
 #!venv/bin/python3.11
-
+import itertools
 import sys
 #importamos el modulo cplex
 import cplex
 
 TOLERANCE =10e-6 
 
+class VariableNameMapping:
+    @classmethod
+    def x(cls, i, j):
+        if not (isinstance(i, int) and isinstance(j, int)):
+            raise ValueError("i, j deben ser enteros")
+        return f"x{i,j}"
+
+    @classmethod
+    def b(cls, i, j):
+        if not (isinstance(i, int) and isinstance(j, int)):
+            raise ValueError("i, j deben ser enteros")
+        return f"b{i, j}"
+
+    @classmethod
+    def u(cls, i):
+        if not isinstance(i, int):
+            raise ValueError("i debe ser entero")
+        return f"u{i}"
+
 class InstanciaRecorridoMixto:
     def __init__(self):
-        self.cant_clientes = 0
+        self.cantidad_clientes = 0
         self.costo_repartidor = 0
         self.d_max = 0
         self.refrigerados = []
@@ -64,7 +83,7 @@ def cargar_instancia():
     instancia.leer_datos(nombre_archivo)
     return instancia
 
-def agregar_variables(prob, instancia):
+def agregar_variables(prob: cplex.Cplex, instancia: InstanciaRecorridoMixto):
     # Definir y agregar las variables:
 	# metodo 'add' de 'variables', con parametros:
 	# obj: costos de la funcion objetivo
@@ -80,20 +99,20 @@ def agregar_variables(prob, instancia):
 #    # Agregar las variables
 #    prob.variables.add(obj = coeficientes_funcion_objetivo, lb = ..., ub = ...., types=..., names=nombres)
     
-    n = instancia.cant_clientes
+    n = instancia.cantidad_clientes
     # Variables de orden
-    prob.variables.add(obj = [0]*n, names = [f"u{i}" for i in range(n)], lb=[0]*n, ub=[n-1]*n, types = ['I']*n)
+    prob.variables.add(obj = [0]*n, names = [VariableNameMapping.u(i) for i in range(n)], lb=[0]*n, ub=[n-1]*n, types = ['I']*n)
 
     # Aristas de camión
     for i in range(n):
         for j in range(n):
-            prob.variables.add(obj = [instancia.costos[i][j]], names=[f"x{i},{j}"], types = ['B'])
+            prob.variables.add(obj = [instancia.costos[i][j]], names=[VariableNameMapping.x(i,j)], types = ['B'])
     # Aristas de bicicleta
     for i in range(n):
         for j in range(n):
-            prob.variables.add(obj = [instancia.costo_repartidor], names=[f"b{i},{j}"], types = ['B'])
+            prob.variables.add(obj = [instancia.costo_repartidor], names=[VariableNameMapping.b(i,j)], types = ['B'])
 
-def agregar_restricciones(prob, instancia):
+def agregar_restricciones(prob: cplex.Cplex, instancia: InstanciaRecorridoMixto):
     # Agregar las restricciones ax <= (>= ==) b:
 	# funcion 'add' de 'linear_constraints' con parametros:
 	# lin_expr: lista de listas de [ind,val] de a
@@ -105,9 +124,37 @@ def agregar_restricciones(prob, instancia):
     # lista de restricciones del tipo ax <= b, [ax <= b]. Por lo tanto, aun cuando
     # agreguemos una unica restriccion, tenemos que hacerlo como una lista de un unico
     # elemento.
-    prob.linear_constraints.add(lin_expr=[["u1", 1]], sense = 'E', rhs = [0])
+    n = instancia.cantidad_clientes
 
-def armar_lp(prob, instancia):
+    # A toda ciudad se entra una vez (por camión o bicicleta)
+    for i in range(n):
+        indices_x = []
+        indices_b = []
+        for j in range(n):
+            if i == j: continue
+            indices_x.append(VariableNameMapping.x(i,j))
+            indices_b.append(VariableNameMapping.b(i,j))
+        lhs = [
+            indices_x + indices_b,
+            [1]*(len(indices_x) + len(indices_b))
+        ]
+        prob.linear_constraints.add(lin_expr=[lhs], senses=["E"], rhs=[1], names=[f"Entra una vez a {i}"])
+
+    # Si se entró en camión, se sale por camión
+    for i in range(n):
+        indices_x_i_j = []
+        indices_x_j_i = []
+        for j in range(n):
+            if i == j: continue
+            indices_x_i_j.append(VariableNameMapping.x(i,j))
+            indices_x_j_i.append(VariableNameMapping.x(j,i))
+        lhs = [
+            indices_x_i_j + indices_x_j_i,
+            [1]*len(indices_x_i_j) + [-1]* len(indices_x_j_i)
+        ]
+        prob.linear_constraints.add(lin_expr=[lhs], senses=["E"], rhs=[1], names=[f"Entro y salgo en camión en {i}"])
+
+def armar_lp(prob: cplex.Cplex, instancia):
 
     # Agregar las variables
     agregar_variables(prob, instancia)
@@ -121,7 +168,7 @@ def armar_lp(prob, instancia):
     # Escribir el lp a archivo
     prob.write('recorridoMixto.lp')
 
-def resolver_lp(prob):
+def resolver_lp(prob: cplex.Cplex):
     
     # Definir los parametros del solver
     #prob.parameters.mip.....
@@ -129,7 +176,7 @@ def resolver_lp(prob):
     # Resolver el lp
     prob.solve()
 
-def mostrar_solucion(prob,instancia):
+def mostrar_solucion(prob: cplex.Cplex, instancia):
     
     # Obtener informacion de la solucion a traves de 'solution'
     
