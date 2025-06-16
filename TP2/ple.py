@@ -117,39 +117,6 @@ def cargar_instancia():
 
 def agregar_variables(prob: cplex.Cplex, instancia: InstanciaRecorridoMixto):
     # Definir y agregar las variables:
-	# metodo 'add' de 'variables', con parametros:
-	# obj: costos de la funcion objetivo
-	# lb: cotas inferiores
-    # ub: cotas superiores
-    # types: tipo de las variables
-    # names: nombre (como van a aparecer en el archivo .lp)
-	
-    # Poner nombre a las variables y llenar coef_funcion_objetivo
-#    nombres = ....
-#    coeficientes_funcion_objetivo = ....
-#    
-#    # Agregar las variables
-#    prob.variables.add(obj = coeficientes_funcion_objetivo, lb = ..., ub = ...., types=..., names=nombres)
-    
-    n = instancia.cantidad_clientes
-    # Variables de orden
-    #prob.variables.add(obj = [0]*n, names = [VariableNameMapping.u(i) for i in range(n)], lb=[0]*n, ub=[n-1]*n, types = ['I']*n)
-    prob.variables.add(obj=[0], names=[VariableNameMapping.u(0)], lb=[0], ub=[0],
-                       types=['I'])
-    prob.variables.add(obj=[0] * (n - 1), names=[VariableNameMapping.u(i) for i in range(1, n)], lb=[1] * (n - 1), ub=[n - 1] * (n - 1),
-                       types=['I'] * (n - 1))
-    # Aristas de camión
-    for i in range(n):
-        for j in range(n):
-            prob.variables.add(obj = [instancia.costos[i][j]], names=[VariableNameMapping.x(i,j)], types = ['B'])
-    # Aristas de bicicleta
-    for i in range(n):
-        for j in range(n):
-            prob.variables.add(obj = [instancia.costo_repartidor], names=[VariableNameMapping.b(i,j)], types = ['B'])
-
-
-def agregar_variables(prob: cplex.Cplex, instancia: InstanciaRecorridoMixto):
-    # Definir y agregar las variables:
     # metodo 'add' de 'variables', con parametros:
     # obj: costos de la funcion objetivo
     # lb: cotas inferiores
