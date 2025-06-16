@@ -6,20 +6,21 @@ from functools import cache
 #importamos el modulo cplex
 import cplex
 
-TOLERANCE =10e-6 
+TOLERANCE =10e-6
+M = 1e5 #TODO: ajustar cota
 
 class VariableNameMapping:
     @classmethod
     def x(cls, i, j):
         if not (isinstance(i, int) and isinstance(j, int)):
             raise ValueError("i, j deben ser enteros")
-        return f"x{i,j}"
+        return f"x{i},{j}"
 
     @classmethod
     def b(cls, i, j):
         if not (isinstance(i, int) and isinstance(j, int)):
             raise ValueError("i, j deben ser enteros")
-        return f"b{i, j}"
+        return f"b{i},{j}"
 
     @classmethod
     def u(cls, i):
@@ -39,7 +40,6 @@ class InstanciaRecorridoMixto:
 
     @cache
     def clientes_alcanzables_por_repartidor_desde(self, cliente_partida: int):
-        #TODO: el conjunto D_i incluye al cliente i?
         return frozenset(cliente for cliente, distancia in enumerate(self.distancias[cliente_partida])
                 if distancia < self.d_max)
 
@@ -82,6 +82,30 @@ class InstanciaRecorridoMixto:
         # cerramos el archivo
         f.close()
 
+class Schedule:
+    def __init__(self, instancia: InstanciaRecorridoMixto, instancia_cplex: cplex.Cplex):
+        self._instancia = instancia
+        self._instancia_cplex = instancia_cplex
+        self._nombre_variable_a_valor = self._map_nombres_a_variables()
+
+    def _map_nombres_a_variables(self):
+        variables = self._instancia_cplex.solution.get_values()
+        nombres = self._instancia_cplex.variables.get_names()
+        return {nombre: valor for nombre, valor in zip(nombres, variables)}
+
+    def imprimir_schedule(self):
+        # Obtener orden de las visitas del camion
+        n = self._instancia.cantidad_clientes
+        posiciones_circuito = [(VariableNameMapping.u(0), self._nombre_variable_a_valor[VariableNameMapping.u(0)])]
+        for i in range(1, n):
+            nombre_u_i = VariableNameMapping.u(i)
+            valor_u_i = self._nombre_variable_a_valor[nombre_u_i]
+            if valor_u_i <= TOLERANCE: continue
+            posiciones_circuito.append((nombre_u_i, valor_u_i))
+        pass
+
+
+
 def cargar_instancia():
     # El 1er parametro es el nombre del archivo de entrada
     nombre_archivo = sys.argv[1].strip()
@@ -123,10 +147,47 @@ def agregar_variables(prob: cplex.Cplex, instancia: InstanciaRecorridoMixto):
         for j in range(n):
             prob.variables.add(obj = [instancia.costo_repartidor], names=[VariableNameMapping.b(i,j)], types = ['B'])
 
+
+def agregar_variables(prob: cplex.Cplex, instancia: InstanciaRecorridoMixto):
+    # Definir y agregar las variables:
+    # metodo 'add' de 'variables', con parametros:
+    # obj: costos de la funcion objetivo
+    # lb: cotas inferiores
+    # ub: cotas superiores
+    # types: tipo de las variables
+    # names: nombre (como van a aparecer en el archivo .lp)
+
+    # Poner nombre a las variables y llenar coef_funcion_objetivo
+    #    nombres = ....
+    #    coeficientes_funcion_objetivo = ....
+    #
+    #    # Agregar las variables
+    #    prob.variables.add(obj = coeficientes_funcion_objetivo, lb = ..., ub = ...., types=..., names=nombres)
+
+    n = instancia.cantidad_clientes
+    # Variables de orden
+    # prob.variables.add(obj = [0]*n, names = [VariableNameMapping.u(i) for i in range(n)], lb=[0]*n, ub=[n-1]*n, types = ['I']*n)
+    prob.variables.add(obj=[0], names=[VariableNameMapping.u(0)], lb=[0], ub=[0],
+                       types=['I'])
+    prob.variables.add(obj=[0] * (n - 1), names=[VariableNameMapping.u(i) for i in range(1, n)], lb=[1] * (n - 1),
+                       ub=[n - 1] * (n - 1),
+                       types=['I'] * (n - 1))
+    # Aristas de camión
+    for i in range(n):
+        for j in range(n):
+            prob.variables.add(obj=[instancia.costos[i][j]], names=[VariableNameMapping.x(i, j)], types=['B'])
+    # Aristas de bicicleta
+    for i in range(n):
+        clientes_alcanzables = instancia.clientes_alcanzables_por_repartidor_desde(i)
+        for j in range(n):
+            if j in clientes_alcanzables:
+                prob.variables.add(obj=[instancia.costo_repartidor], names=[VariableNameMapping.b(i, j)], types=['B'])
+
+
 def agregar_restricciones(prob: cplex.Cplex, instancia: InstanciaRecorridoMixto):
     # Agregar las restricciones ax <= (>= ==) b:
-	# funcion 'add' de 'linear_constraints' con parametros:
-	# lin_expr: lista de listas de [ind,val] de a
+    # funcion 'add' de 'linear_constraints' con parametros:
+    # lin_expr: lista de listas de [ind,val] de a
     # sense: lista de 'L', 'G' o 'E'
     # rhs: lista de los b
     # names: nombre (como van a aparecer en el archivo .lp)
@@ -143,11 +204,13 @@ def agregar_restricciones(prob: cplex.Cplex, instancia: InstanciaRecorridoMixto)
         indices_b = []
         for j in range(n):
             if i == j: continue
-            indices_x.append(VariableNameMapping.x(j,i))
-            indices_b.append(VariableNameMapping.b(j,i))
+            clientes_alcanzables = instancia.clientes_alcanzables_por_repartidor_desde(j)
+            indices_x.append(VariableNameMapping.x(j, i))
+            if i in clientes_alcanzables:
+                indices_b.append(VariableNameMapping.b(j, i))
         lhs = [
             indices_x + indices_b,
-            [1]*(len(indices_x) + len(indices_b))
+            [1] * (len(indices_x) + len(indices_b))
         ]
         prob.linear_constraints.add(lin_expr=[lhs], senses=["E"], rhs=[1], names=[f"Entra una vez a {i}"])
 
@@ -157,11 +220,11 @@ def agregar_restricciones(prob: cplex.Cplex, instancia: InstanciaRecorridoMixto)
         indices_x_j_i = []
         for j in range(n):
             if i == j: continue
-            indices_x_i_j.append(VariableNameMapping.x(i,j))
-            indices_x_j_i.append(VariableNameMapping.x(j,i))
+            indices_x_i_j.append(VariableNameMapping.x(i, j))
+            indices_x_j_i.append(VariableNameMapping.x(j, i))
         lhs = [
             indices_x_i_j + indices_x_j_i,
-            [1]*len(indices_x_i_j) + [-1]* len(indices_x_j_i)
+            [1] * len(indices_x_i_j) + [-1] * len(indices_x_j_i)
         ]
         prob.linear_constraints.add(lin_expr=[lhs], senses=["E"], rhs=[0], names=[f"Entro y salgo en camión en {i}"])
 
@@ -169,17 +232,22 @@ def agregar_restricciones(prob: cplex.Cplex, instancia: InstanciaRecorridoMixto)
     for i in range(n):
         indices_b_j_i = []
         indices_x_i_j = []
+        indices_b_i_j = []
+        clientes_alcanzables_desde_i = instancia.clientes_alcanzables_por_repartidor_desde(i)
         for j in range(n):
             if i == j: continue
-            indices_x_i_j.append(VariableNameMapping.x(i,j))
-            indices_b_j_i.append(VariableNameMapping.b(j,i))
-        clientes_alcanzables = instancia.clientes_alcanzables_por_repartidor_desde(i)
-        indices_b_i_j = [VariableNameMapping.b(i,j) for j in clientes_alcanzables]
+            clientes_alcanzables_desde_j = instancia.clientes_alcanzables_por_repartidor_desde(j)
+            indices_x_i_j.append(VariableNameMapping.x(i, j))
+            if i in clientes_alcanzables_desde_j:
+                indices_b_j_i.append(VariableNameMapping.b(j, i))
+            if j in clientes_alcanzables_desde_i:
+                indices_b_i_j.append(VariableNameMapping.b(i,j))
         lhs = [
-            indices_b_i_j + indices_x_i_j + indices_b_j_i,
-            [1]*(len(indices_b_i_j) + len(indices_x_i_j) + len(indices_b_j_i))
+            indices_b_j_i + indices_x_i_j + indices_b_i_j,
+            [n] * len(indices_b_j_i) + [1] * (len(indices_x_i_j) + len(indices_b_i_j))
         ]
-        prob.linear_constraints.add(lin_expr=[lhs], senses=["L"], rhs=[1], names=[f"Si entro en bicicleta en {i}, no salgo de otra forma"])
+        prob.linear_constraints.add(lin_expr=[lhs], senses=["L"], rhs=[n],
+                                    names=[f"Si entro en bicicleta en {i}, no salgo de otra forma"])
 
     # Ningún repartidor tiene más de un refrigerado
     for i in range(n):
@@ -193,17 +261,18 @@ def agregar_restricciones(prob: cplex.Cplex, instancia: InstanciaRecorridoMixto)
         prob.linear_constraints.add(lin_expr=[lhs], senses=["L"], rhs=[1],
                                     names=[f"Repartidor que sale de {i} no tiene más de un refrigerado"])
 
-    for i, j in itertools.product(range(1, n), range(1, n)): #no incluye al v1
+    for i, j in itertools.product(range(1, n), range(1, n)):  # no incluye al v1
         if i == j: continue
         indices = [
             VariableNameMapping.u(i),
             VariableNameMapping.u(j),
-            VariableNameMapping.x(i,j)
+            VariableNameMapping.x(i, j),
         ]
         valores = [
             1,
             -1,
-            n-1
+            n - 1,
+
         ]
         lhs = [indices, valores]
         prob.linear_constraints.add(lin_expr=[lhs], senses=["L"], rhs=[n - 2],
@@ -242,12 +311,18 @@ def mostrar_solucion(prob: cplex.Cplex, instancia):
     valor_obj = prob.solution.get_objective_value()
     
     print('Funcion objetivo: ',valor_obj,'(' + str(status) + ')')
-    
+
+    sched = Schedule(instancia, prob)
+    sched.imprimir_schedule()
+
     # Tomar los valores de las variables
     x  = prob.solution.get_values()
+    nombres = prob.variables.get_names()
 
     # Mostrar las variables con valor positivo (mayor que una tolerancia)
-    pass
+    for variable, nombre in zip(x, nombres):
+        if variable > TOLERANCE:
+            print(nombre, variable)
 
 def main():
     

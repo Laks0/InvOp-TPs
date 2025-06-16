@@ -40,7 +40,7 @@
 		\end{cases}
 	\]
 
-	$r_{ij}$ solo está definida para $j \in D_i$, en la formulación queda más cómodo escribirl como si estuviera definido para todas las parejas pero se pueden interpretar $r_{ij}$ inválidos como constantes 0.
+	$b_{ij}$ solo está definida para $j \in D_i$, en la formulación queda más cómodo escribir como si estuviera definido para todas las parejas pero se pueden interpretar $r_{ij}$ inválidos como constantes 0.
 
 	También contamos con el dato de entrada:
 
@@ -69,7 +69,7 @@
 		\\
 		\sum_{j \neq i} x_{ij} = \sum_{j\neq i} x_{ji} & \forall v_i \in V & \text{si se entró en camión, se sale por camión} \\
 		\\
-		1 - \sum_{j \neq i} b_{ji} \geq \sum_{j\in D_i} b_{ij} + \sum_{j \neq i} x_{ij} & \forall v_i \in V & \text{si se entra en bicicleta, no se sale de ninguna forma} \\
+		M(1 - \sum_{j \neq i} b_{ji}) \geq \sum_{j \neq i} b_{ij} + \sum_{j \neq i} x_{ij} & \forall v_i \in V, M \geq |V| & \text{si se entra en bicicleta, no se sale de ninguna forma} \\
 		\\
 		\sum_{j \in D_i} b_{ij} r_j \leq 1 & \forall v_i \in V & \text{ningún repartidor tiene más de un refrigerado} \\
 		\\
