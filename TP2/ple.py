@@ -1,7 +1,10 @@
 #!venv/bin/python3.11
 import itertools
+import math
 import sys
 from functools import cache
+import networkx as nx
+import matplotlib.pyplot as plt
 
 #importamos el modulo cplex
 import cplex
@@ -82,7 +85,7 @@ class InstanciaRecorridoMixto:
         # cerramos el archivo
         f.close()
 
-class Schedule:
+class GraficarSolucion:
     def __init__(self, instancia: InstanciaRecorridoMixto, instancia_cplex: cplex.Cplex):
         self._instancia = instancia
         self._instancia_cplex = instancia_cplex
@@ -93,16 +96,68 @@ class Schedule:
         nombres = self._instancia_cplex.variables.get_names()
         return {nombre: valor for nombre, valor in zip(nombres, variables)}
 
-    def imprimir_schedule(self):
-        # Obtener orden de las visitas del camion
+    def _circuito_camion(self):
+        # Circuito Hamiltoniano del camion
         n = self._instancia.cantidad_clientes
-        posiciones_circuito = [(VariableNameMapping.u(0), self._nombre_variable_a_valor[VariableNameMapping.u(0)])]
-        for i in range(1, n):
-            nombre_u_i = VariableNameMapping.u(i)
-            valor_u_i = self._nombre_variable_a_valor[nombre_u_i]
-            if valor_u_i <= TOLERANCE: continue
-            posiciones_circuito.append((nombre_u_i, valor_u_i))
-        pass
+        circuito_camion = []
+        for u, v in itertools.product(range(n), range(n)):
+            if u == v: continue
+            valor_x_u_v = self._nombre_variable_a_valor[VariableNameMapping.x(u, v)]
+            if valor_x_u_v > TOLERANCE:
+                circuito_camion.append((u,v))
+        return circuito_camion
+
+    def _aristas_repartidor(self):
+        n = self._instancia.cantidad_clientes
+        aristas_repartidor = []
+        for u, v in itertools.product(range(n), range(n)):
+            if u == v: continue
+            try:
+                valor_b_u_v = self._nombre_variable_a_valor[VariableNameMapping.b(u, v)]
+                if valor_b_u_v > TOLERANCE:
+                    aristas_repartidor.append((u,v))
+            except KeyError:
+                continue # No todas las b_i_j están definidas
+        return aristas_repartidor
+
+    def dibujar_grafo(self, export_path: str):
+        color_camion = 'skyblue'
+        color_repartidor = 'salmon'
+
+        circuito_camion = self._circuito_camion()
+        aristas_repartidor = self._aristas_repartidor()
+
+        grafo = nx.Graph()
+        grafo.add_edges_from(circuito_camion)
+        grafo.add_edges_from(aristas_repartidor)
+
+        k_val = 2 / math.sqrt(grafo.number_of_nodes()) # para que no estén tan apretados los nodos
+        pos = nx.spring_layout(grafo, seed=8_11_1914, k=k_val, iterations=1000) # Cumple Dantzig
+
+        aristas_ordenadas = {tuple(sorted(edge)) for edge in circuito_camion}
+
+        coloreo_aristas = []
+        for u, v in grafo.edges():
+            if tuple(sorted((u, v))) in aristas_ordenadas:
+                coloreo_aristas.append(color_camion)
+            else:
+                coloreo_aristas.append(color_repartidor)
+
+        plt.figure(figsize=(20, 16))
+
+        nx.draw(
+            grafo,
+            pos,
+            with_labels=True,
+            node_color='lightgray',
+            node_size=600,
+            font_size=10,
+            font_weight='bold',
+            edge_color=coloreo_aristas,  # Apply the list of colors here
+            width=2.0  # Make edges thicker
+        )
+        plt.savefig(export_path, bbox_inches='tight', dpi=300)
+
 
 
 
@@ -279,8 +334,8 @@ def mostrar_solucion(prob: cplex.Cplex, instancia):
     
     print('Funcion objetivo: ',valor_obj,'(' + str(status) + ')')
 
-    sched = Schedule(instancia, prob)
-    sched.imprimir_schedule()
+    plotter = GraficarSolucion(instancia, prob)
+    plotter.dibujar_grafo("out.png")
 
     # Tomar los valores de las variables
     x  = prob.solution.get_values()
