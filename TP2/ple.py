@@ -128,6 +128,7 @@ class GraficarSolucion:
         aristas_repartidor = self._aristas_repartidor()
 
         grafo = nx.Graph()
+        grafo.add_nodes_from(range(self._instancia.cantidad_clientes))
         grafo.add_edges_from(circuito_camion)
         grafo.add_edges_from(aristas_repartidor)
 
