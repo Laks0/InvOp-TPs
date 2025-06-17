@@ -20,9 +20,14 @@
 
 	\maketitle
 
+\section{Modelos}
+\subsection{Modelo para la metodología actual}
+
 	Basado en Miller, Tucker, y Zemlin
 
-	Dada un cliente $i$ definimos $D_i$ como los clientes a distancia menor a $dist\_max$ de $i$.
+\subsubsection{Variables}
+
+	Dado un cliente $i$ definimos $D_i$ como los clientes a distancia menor a $dist\_max$ de $i$.
 
 	\[
 		x_{ij} = \begin{cases}
@@ -40,7 +45,7 @@
 		\end{cases}
 	\]
 
-	$b_{ij}$ solo está definida para $j \in D_i$, en la formulación queda más cómodo escribir como si estuviera definido para todas las parejas pero se pueden interpretar $r_{ij}$ inválidos como constantes 0.
+	$b_{ij}$ solo está definida para $j \in D_i$, por claridad en la formulación está escrito como si estuviera definido para todas las parejas pero se pueden interpretar $b_{ij}$ inválidos como constantes 0.
 
 	También contamos con el dato de entrada:
 
@@ -73,11 +78,18 @@
 		\\
 		\sum_{j \in D_i} b_{ij} r_j \leq 1 & \forall v_i \in V & \text{ningún repartidor tiene más de un refrigerado} \\
 		\\
-		u_i - u_j + (n - 1) x_{ij} \leq n - 2 & \forall v_i \neq v_j \in V - \{a\} & \text{continuidad} \\
+		u_i - u_j + (n - 1) x_{ij} \leq n - 2 & \forall v_i \neq v_j \in V - \{v_1\} & \text{continuidad} \\
 		\\
 		u_1 = 0, 1 \leq u_i \leq n-1 & \forall v_i \in V - \{v_1\} \\
 		\\
 		x_{ij}, b_{ij} \in \{0,1\}, u_i \in \mathbb{Z}_{\geq 0}
 	\end{array}
 	\]
+	
+	\subsection{Modelo con restricciones agregadas}
+	Este modelo extiende el anterior con las siguientes restricciones adicionales:
+	\begin{itemize}
+		\item Si se contrata un repartidor en una parada de camión determinada, este debe realizar al menos cuatro entregas.
+		\item Hay un conjunto de clientes $E_i$ con $1 \leq i \leq |V|$ que deben ser visitados exclusivamente por un camión.
+	\end{itemize}
 \end{document}
