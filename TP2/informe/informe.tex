@@ -90,6 +90,18 @@
 	Este modelo extiende el anterior con las siguientes restricciones adicionales:
 	\begin{itemize}
 		\item Si se contrata un repartidor en una parada de camión determinada, este debe realizar al menos cuatro entregas.
-		\item Hay un conjunto de clientes $E_i$ con $1 \leq i \leq |V|$ que deben ser visitados exclusivamente por un camión.
+		\item Hay un conjunto de clientes $E$ que deben ser visitados exclusivamente por un camión. Es decir que sus paquetes no pueden ser repartidos por un repartidor en bicicleta.
 	\end{itemize}
+	
+	Se extiende el modelo presentado en la sección anterior con las siguientes restricciones.
+	
+		\[
+	\begin{array}{l l l}
+		4(1 - b_{ij}) + \sum_{v_k \in D_i} b_{ik} \geq 4 & \forall v_i, v_j \in V \times V & \text{Si se contrata un repartidor, este pasa por al menos 4 clientes} \\
+		\\
+		\sum_{v_i \in V}  b_{ij} = 0 & \forall v_j \in E  & \text{Los clientes exclusivos solo son visitador por camión} \\
+	\end{array}
+	\]
+	
+	No hay cambios en las variables, función objetivo o las demás restricciones.
 \end{document}
