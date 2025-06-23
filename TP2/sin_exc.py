@@ -313,7 +313,7 @@ def armar_lp(prob: cplex.Cplex, instancia):
     prob.objective.set_sense(prob.objective.sense.minimize)
 
     # Escribir el lp a archivo
-    prob.write('recorridoMixto.lp')
+    prob.write('modelos/m2_'+sys.argv[1].strip().split("/")[-1]+'.lp')
 
 def resolver_lp(prob: cplex.Cplex):
     
@@ -359,10 +359,10 @@ def main():
     armar_lp(prob,instancia)
 
     # Resolucion del modelo
-    resolver_lp(prob)
+    #resolver_lp(prob)
 
     # Obtencion de la solucion
-    mostrar_solucion(prob,instancia)
+    #mostrar_solucion(prob,instancia)
 
 if __name__ == '__main__':
     main()
