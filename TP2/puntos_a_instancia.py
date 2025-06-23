@@ -63,8 +63,8 @@ def main():
     costo_repartidor = np.percentile(costos, 25*c_costo)
 
     print(len(puntos))
-    print(costo_repartidor)
-    print(dist_max)
+    print(int(costo_repartidor))
+    print(int(dist_max))
 
     print(len(refrigerados))
     for i in refrigerados:
@@ -78,7 +78,7 @@ def main():
         for j in range(i+1, len(puntos)):
             if random() > chance_arista:
                 continue
-            print(f"{i} {j} {distancias[i][j]} {costos[i][j]}")
+            print(f"{i} {j} {int(distancias[i][j])} {int(costos[i][j])}")
 
 if __name__ == "__main__":
     main()
