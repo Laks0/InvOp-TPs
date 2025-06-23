@@ -1,10 +1,19 @@
-\documentclass[10pt,a4paper]{article}
+\documentclass[10pt]{article}
+\usepackage[a4paper, margin=1in]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
-\usepackage{a4wide} % márgenes un poco más anchos que lo usual
 \usepackage{caratula}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+	}
 
 \begin{document}
 
@@ -21,11 +30,18 @@
 	\maketitle
 
 \section{Modelos}
+
+
+
 \subsection{Modelo para la metodología actual}
 
-	Basado en Miller, Tucker, y Zemlin
+La metodología actual es idéntico al problema del TSP clásico. Usamos el modelo de Miller, Tucker, y Zemlin para simularlo y como base para las otras metodologías.
 
-\subsubsection{Variables}
+\subsection{Primer modelo con repartidores}
+
+Basado en el modelo anterior, agregamos variables para distinguir cuándo un cliente fue visitado por repartidor a bicicleta y cuándo fue visitado por el camión.
+
+	\vspace{5mm}
 
 	Dado un cliente $i$ definimos $D_i$ como los clientes a distancia menor a $dist\_max$ de $i$.
 
@@ -104,4 +120,9 @@
 	\]
 	
 	No hay cambios en las variables, función objetivo o las demás restricciones.
+
+	\section{Experimentación}
+
+	Usamos un generador de instancias aleatorias para generar mapas donde algunos caminos son posibles y otros no, asignando distanias y costos al azar, así como también qué clientes necesitan refrigeración o tienen que vistiarse con camión en el último modelo. También sacamos datos de posiciones de ciudades de \url{https://people.sc.fsu.edu/~jburkardt/datasets/cities/cities.html}, usamos las distancias y las modificamos aleatoriamente para crear una instancia con costos.
+
 \end{document}
