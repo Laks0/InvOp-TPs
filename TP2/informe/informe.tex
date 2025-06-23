@@ -123,6 +123,12 @@ Basado en el modelo anterior, agregamos variables para distinguir cuándo un cli
 
 	\section{Experimentación}
 
-	Usamos un generador de instancias aleatorias para generar mapas donde algunos caminos son posibles y otros no, asignando distanias y costos al azar, así como también qué clientes necesitan refrigeración o tienen que vistiarse con camión en el último modelo. También sacamos datos de posiciones de ciudades de \url{https://people.sc.fsu.edu/~jburkardt/datasets/cities/cities.html}, usamos las distancias y las modificamos aleatoriamente para crear una instancia con costos.
+	Usamos un generador de instancias aleatorias para generar mapas donde algunos caminos son posibles y otros no, asignando distanias y costos al azar, así como también qué clientes necesitan refrigeración o tienen que vistiarse con camión en el último modelo. También sacamos datos de posiciones de ciudades de \url{https://people.sc.fsu.edu/~jburkardt/datasets/cities/cities.html}, usamos las distancias y las modificamos aleatoriamente para crear una instancia con costos proporcionales. De esta página tomamos las instancias \texttt{wg59} con 59 ciudades de Alemania Oriental, y \texttt{usca321} con 321 ciudades de Estados Unidos y Canadá.
+
+	Para decidir si un viaje entre dos puntos es posible agregamos aleatoriamente aristas entre los puntos, llamamos \textit{ralas} a las instancias donde la probabilidad de agregar una arista es de $0.3$ y \textit{densas} cuando la probabilidad es de $0.9$. Siempre asegurándonos de que el grafo resultante quede conexo.
+
+	También con los puntos creamos instancias donde la proporción de refrigerados es del $70\%$ y otras donde es el $10\%$. Hicimos lo mismo con los exclusivos.
+
+	Por último también agregamos instancias donde la distancia máxima del repartidor era muy corta o muy larga, y donde el repartidor era muy barato o muy caro. Por defecto la distancia máxima del repartidor la tomamos como la mediana de todas las distancias, pero para representar una distancia máxima más corta usamos el primer quintil, y para una más larga el tercero. Hicimos lo mismo con los costos para representar cuándo el repartidor es más caro o más barato.
 
 \end{document}
