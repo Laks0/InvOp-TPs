@@ -76,7 +76,7 @@ def main():
 
     for i in range(len(puntos)):
         for j in range(i+1, len(puntos)):
-            if j != i + 1 and random() > chance_arista:
+            if (not (i == 0 and j == len(puntos)-1)) and j != i + 1 and random() > chance_arista:
                 continue
             print(f"{i} {j} {int(distancias[i][j])} {int(costos[i][j])}")
 

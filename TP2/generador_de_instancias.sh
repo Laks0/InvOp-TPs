@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Se le pasa como primer parámetro el archivo con los puntos de la instancia
+
 comando="python puntos_a_instancia.py $1"
 archivo=$1
 nombre="${archivo%.*}"
