@@ -41,7 +41,7 @@ def main():
     try:
         chance_arista = float(sys.argv[6].strip())
     except IndexError:
-        chance_arista = .9
+        chance_arista = .6
 
     puntos = []
     with open(nombre_archivo) as f:
@@ -76,7 +76,7 @@ def main():
 
     for i in range(len(puntos)):
         for j in range(i+1, len(puntos)):
-            if random() > chance_arista:
+            if j != i + 1 and random() > chance_arista:
                 continue
             print(f"{i} {j} {int(distancias[i][j])} {int(costos[i][j])}")
 
