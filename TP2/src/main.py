@@ -8,19 +8,20 @@ from src.modelos.modelo_tsp import ModeloTSP
 from src.modelos.variantes_con_repartidores import VarianteClientesExclusivos, VarianteRepartidorCuatroOMasClientes
 
 
-def cargar_instancia():
+def cargar_instancia(path: str = None):
     # El 1er parametro es el nombre del archivo de entrada
-    nombre_archivo = sys.argv[1].strip()
+    if path is None:
+        path = sys.argv[1].strip()
     # Crea la instancia vacia
     instancia = InstanciaRecorridoMixto()
     # Llena la instancia con los datos del archivo de entrada
-    instancia.leer_datos(nombre_archivo)
+    instancia.leer_datos(path)
     return instancia
 
 
 def main():
     # Lectura de datos desde el archivo de entrada
-    instancia = cargar_instancia()
+    instancia = cargar_instancia("/tmp/instancia")
 
     # Definicion del problema de Cplex
     prob = VarianteRepartidorCuatroOMasClientes(instancia)

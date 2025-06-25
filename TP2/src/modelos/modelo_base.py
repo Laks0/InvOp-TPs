@@ -30,6 +30,12 @@ class ModeloBase:
             argumento(self._modelo)
         self._modelo.solve()
 
+    def obtener_solucion(self):
+        status = self._modelo.solution.get_status_string(status_code=self._modelo.solution.get_status())
+        valor_obj = self._modelo.solution.get_objective_value()
+        print('Funcion objetivo: ', valor_obj, '(' + str(status) + ')')
+        return valor_obj, self._instancia, self._modelo
+
     def mostrar_solucion(self, output_path: str):
         # Obtener informacion de la solucion a traves de 'solution'
 

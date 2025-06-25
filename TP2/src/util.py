@@ -44,6 +44,45 @@ class GraficarSolucion:
                 continue  # No todas las b_i_j están definidas
         return aristas_repartidor
 
+    def dibujar_clientes_en_grilla(self, grid_size, clients, export_path: str):
+        circuito_camion = self._circuito_camion()
+        aristas_repartidor = self._aristas_repartidor()
+        funcion_objectivo = self._instancia_cplex.solution.get_objective_value()
+
+        plt.figure(figsize=(6, 6))
+
+        for u, v in circuito_camion:
+            punto_u = clients[u,:]
+            punto_v = clients[v,:]
+            plt.plot([punto_u[0], punto_v[0]], [punto_u[1], punto_v[1]], c='red', linewidth=1, alpha=0.75)
+
+        for u, v in aristas_repartidor:
+            punto_u = clients[u,:]
+            punto_v = clients[v,:]
+            plt.plot([punto_u[0], punto_v[0]], [punto_u[1], punto_v[1]], c='green', linewidth=1, alpha=0.75)
+
+        plt.scatter(clients[:, 0], clients[:, 1], c='blue', marker='o', zorder=3, alpha=0.5)
+        plt.xlim(0, grid_size)
+        plt.ylim(0, grid_size)
+        plt.grid(True, which='both', linestyle=':', linewidth=0.5)
+
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        plt.title('Clientes en la grilla')
+        plt.legend(
+            handles=[
+                plt.Line2D([0], [0], color='red', linewidth=2, label='Camión'),
+                plt.Line2D([0], [0], color='green', linewidth=2, label='Repartidor'),
+                plt.Line2D([0], [0], marker='o', color='w', markerfacecolor='blue', markersize=8, label='Clientes')
+            ],
+            loc='upper right',
+            facecolor='white',
+            edgecolor='black'
+        )
+        plt.figtext(0.99, 0.01, f'Función objetivo: {funcion_objectivo:.2f}', horizontalalignment='right', fontsize=10)
+        plt.savefig(export_path, bbox_inches='tight', dpi=300)
+
+
     def dibujar_grafo(self, export_path: str):
         color_camion = 'skyblue'
         color_repartidor = 'salmon'

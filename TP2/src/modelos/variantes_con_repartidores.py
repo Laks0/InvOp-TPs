@@ -23,7 +23,7 @@ class VarianteRepartidorCuatroOMasClientes(ModeloConRepartidores):
             ]
             indices.extend(
                 [VariableNameMapping.b(i, k) for k in instancia.clientes_alcanzables_por_repartidor_desde(i) - {j}])
-            valores.extend([1] * n)
+            valores.extend([1] * len(indices[1:]))
             lhs = [indices, valores]
             modelo.linear_constraints.add(lin_expr=[lhs], senses=["G"], rhs=[0],
                                         names=[f"Al menos 4 por repartidor {i}, {j}"])

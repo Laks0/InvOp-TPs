@@ -34,7 +34,7 @@ class InstanciaRecorridoMixto:
     @cache
     def clientes_alcanzables_por_repartidor_desde(self, cliente_partida: int):
         return frozenset(cliente for cliente, distancia in enumerate(self.distancias[cliente_partida])
-                         if distancia < self.d_max)
+                         if distancia < self.d_max and cliente != cliente_partida)
 
     def leer_datos(self, filename):
         # abrimos el archivo de datos
