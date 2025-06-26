@@ -7,6 +7,9 @@
 \usepackage{amssymb}
 \usepackage{hyperref}
 \usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{subcaption} % Para subfiguras
+
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
@@ -40,13 +43,13 @@ A continuación, se describen las distintas metodologías de reparto considerada
 \section{Modelos}
 
 
-\subsection{Modelo para la metodología actual (MA)}
+\subsection{Modelo para la metodología actual (TSP)}
 
-La metodología actual consiste en que el camión visita a cada cliente y entrega sus pedidos, es decir, idéntica al problema del viajante clásico (TSP). Usamos el modelo de Miller, Tucker, y Zemlin para simularlo y como base para las otras metodologías.
+La metodología actual consiste en que el camión visita a cada cliente y entrega sus pedidos, es decir, idéntica al problema del viajante clásico. Usamos el modelo de Miller, Tucker, y Zemlin para simularlo y como base para las otras metodologías.
 
 \subsection{Modelo con repartidores (MR)}
 
-Se desea evaluar una nueva metodología de distribución en la cual no necesariamente se entregan pedidos a todos los clientes, sino a una cantidad fija determinada por la constante $cant\_clientes$. En este enfoque, el camión realiza paradas en ciertos clientes seleccionados, y desde esas paradas se pueden realizar entregas adicionales mediante repartidores a pie o en bicicleta, siempre que los clientes estén a una distancia menor o igual a $dist\_max$. Cada repartidor tiene un costo por cliente atendido, y esta restringido a una única entrega en caso de que sea un producto refrigerado.
+Se desea evaluar una nueva metodología de distribución en la cual el camión realiza paradas en ciertos clientes, y desde esas paradas se pueden realizar entregas adicionales mediante repartidores a pie o en bicicleta, siempre que los clientes estén a una distancia menor o igual a $dist\_max$. Cada repartidor tiene un costo por cliente atendido, y esta restringido a una única entrega en caso de que sea un producto refrigerado.
 
 
 Basado en el modelo anterior, agregamos variables para distinguir cuándo un cliente fue visitado por repartidor a bicicleta y cuándo fue visitado por el camión.
@@ -144,7 +147,91 @@ Basado en el modelo anterior, agregamos variables para distinguir cuándo un cli
 
 
 \section{Análisis de sensibilidad de los parámetros del modelo}
-\section{Comparación de costos entre modelos}
+
+
+\section{Comparación de costos entre metodologías}
+Para analizar el rendimiento de las distintas metodologías, definimos y generamos dos tipos distintos de instancias, uno con clientes uniformemente distribuidos y el otro conformado por varios clusters distintos donde se concentran grupos de clientes dentro de un radio. En las figuras~\ref{fig:compuesta1} y~\ref{fig:compuesta2} respectivamente, se puede apreciar la diferencia de los tipos.
+
+\vspace{5mm}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figuras/plano_uniforme_tsp_2.png}
+		\caption{Metodología actual (TSP)}
+		\label{fig:sub1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figuras/plano_uniforme_repartidores_2.png}
+		\caption{Metodología con repartidores (MR)}
+		\label{fig:sub2}
+	\end{subfigure}
+	
+	\vspace{0.5cm}
+	
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figuras/plano_uniforme_cuatro_o_mas_2.png}
+		\caption{Metodología con repartidores de al menos cuatro entregas (MR4)}
+		\label{fig:sub3}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figuras/plano_uniforme_exclusivos_2.png}
+		\caption{Metodología con clientes exclusivos (MRE)}
+		\label{fig:sub4}
+	\end{subfigure}
+	
+	\caption{Optimización de una misma instancia \textbf{uniformemente distribuida} con los distintos modelos.}
+	\label{fig:compuesta1}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figuras/plano_clusters_tsp_0.png}
+		\caption{Metodología actual (TSP)}
+		\label{fig:sub1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figuras/plano_clusters_repartidores_0.png}
+		\caption{Metodología con repartidores (MR)}
+		\label{fig:sub2}
+	\end{subfigure}
+	
+	\vspace{0.5cm}
+	
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figuras/plano_clusters_cuatro_o_mas_0.png}
+		\caption{Metodología con repartidores de al menos cuatro entregas (MR4)}
+		\label{fig:sub3}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figuras/plano_clusters_exclusivos_0.png}
+		\caption{Metodología con clientes exclusivos (MRE)}
+		\label{fig:sub4}
+	\end{subfigure}
+	
+	\caption{Optimización de una misma instancia de \textbf{clusters} con los distintos modelos.}
+	\label{fig:compuesta2}
+\end{figure}
+
+\subsection{Análisis por metodología e instancia}
+Con el fin de relevar la diferencia en costos, generamos $?$ instancias de los dos tipos de distribuciones y evaluamos cada una con las cuatro metodologías distintas. 
+En la figura $?$ se muestran los resultados donde, como era esperable para las instancias con clusters, cualquier metodología con repartidores en general va a tener un menor costo de reparto que la metodología actual. 
+
 \section{Tiempos de cómputo CPLEX}
 
 \end{document}
