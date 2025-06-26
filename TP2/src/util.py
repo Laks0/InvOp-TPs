@@ -81,6 +81,7 @@ class GraficarSolucion:
         )
         plt.figtext(0.99, 0.01, f'Función objetivo: {funcion_objectivo:.2f}', horizontalalignment='right', fontsize=10)
         plt.savefig(export_path, bbox_inches='tight', dpi=300)
+        plt.close()
 
 
     def dibujar_grafo(self, export_path: str):
@@ -121,3 +122,5 @@ class GraficarSolucion:
             width=2.0  # Make edges thicker
         )
         plt.savefig(export_path, bbox_inches='tight', dpi=300)
+        plt.close()
+

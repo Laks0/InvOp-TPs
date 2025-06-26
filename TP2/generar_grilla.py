@@ -1,10 +1,12 @@
 import itertools
-from zipfile import compressor_names
-
+import time
 import matplotlib.pyplot as plt
 import numpy as np
 import os
 import sys
+import pandas as pd
+from cplex._internal._constants import CPX_NODESEL_DFS
+
 from src.main import cargar_instancia
 from src.base import InstanciaRecorridoMixto
 from src.modelos.modelo_repartidores import ModeloConRepartidores
@@ -40,26 +42,120 @@ def write_instance(distancias, costos, exclusivos, refrigerados, costo_repartido
 
 
 def main():
+    generar_instancias_evaluacion_modelos_clustered()
+    generar_instancias_evaluacion_modelos_uniformes()
+    #testeos_rendimiento()
+
+
+
+def testeos_rendimiento():
     seed = sum(map(ord, "Programación lineal entera"))
-    grid_size = 50
-    client_count = 20
+    grid_size = 100
+    client_count = 30
+    max_repartidor = 8  # Cuantas "cuadras" se mueve el repartidor
+    costo_repartidor = 2
+    costo_camion_por_unidad = 5
+    cant_refrigerados = client_count // 8
+    cant_exculsivos = client_count // 4
+    tmp_path = "/tmp/instancia"
+    np.random.seed(seed)
+
+    tiempos_dfs = []
+    tiempos_default = []
+
+    for _ in range(5):
+
+        clients = muestra_clientes_uniforme(client_count, grid_size)
+        #clients = muestra_clientes_clusters(client_count, grid_size, 7, 10)
+        exclusivos = np.random.choice(np.arange(client_count), size=cant_exculsivos, replace=False)
+        refrigerados = np.random.choice(np.arange(client_count), size=cant_refrigerados, replace=False)
+
+        #distancias, costos = generar_grafo_completo(clients, costo_camion_por_unidad)
+        distancias, costos = generar_grafo_ralo(clients, costo_camion_por_unidad, 0.6)
+
+        write_instance(
+            distancias,
+            costos,
+            exclusivos,
+            refrigerados,
+            costo_repartidor,
+            max_repartidor,
+            costo_camion_por_unidad,
+            tmp_path
+        )
+
+        instancia = cargar_instancia(tmp_path)
+        prob = ModeloConRepartidores(instancia)
+        mem_limit = lambda c: c.parameters.mip.limits.treememory.set(1024 * 32)  # 32GB
+        tmp_dir = lambda c: c.parameters.workdir.set("/home/jorge/tmp/cplex")
+
+        prob._modelo.parameters.randomseed.set(seed)
+
+        t0 = time.monotonic()
+        prob.resolver(mem_limit, tmp_dir)
+        t1 = time.monotonic()
+
+        tiempo_default = t1 - t0
+        tiempos_default.append(tiempo_default)
+
+        instancia = cargar_instancia(tmp_path)
+        prob = ModeloConRepartidores(instancia)
+        mem_limit = lambda c: c.parameters.mip.limits.treememory.set(1024 * 32)  # 32GB
+        tmp_dir = lambda c: c.parameters.workdir.set("/home/jorge/tmp/cplex")
+
+        prob._modelo.parameters.randomseed.set(seed)
+
+        # Busqueda DFS
+        #prob._modelo.parameters.mip.strategy.nodeselect.set(prob._modelo.parameters.mip.strategy.nodeselect.values.depth_first)
+
+        # Busqueda best estimate
+        #prob._modelo.parameters.mip.strategy.nodeselect.set(prob._modelo.parameters.mip.strategy.nodeselect.values.best_estimate)
+
+        #prob._modelo.parameters.mip.strategy.heuristiceffort.set(10)
+
+        prob._modelo.parameters.mip.strategy.variableselect.set(4)
+
+        #prob._modelo.parameters.threads.set(6)
+
+        #prob._modelo.parameters.mip.cuts.nodecuts.set(1)
+        #prob._modelo.parameters.mip.cuts.gomory.set(2)
+        #prob._modelo.parameters.mip.cuts.flowcovers.set(2)
+        # Con todas las semillas fijas estas corridas deberían ser deterministicas (salvo por variaciones en la carga de la computadora)
+
+        t0 = time.monotonic()
+        prob.resolver(mem_limit, tmp_dir)
+        t1 = time.monotonic()
+
+        tiempo_dfs = t1 - t0
+        tiempos_dfs.append(tiempo_dfs)
+
+    print("Tiempos default:", tiempos_default)
+    print("Tiempos DFS: ", tiempos_dfs)
+
+def generar_instancias_evaluacion_modelos_uniformes():
+    seed = sum(map(ord, "branch and bound"))
+    grid_size = 75
+    client_count = 25
     max_repartidor = 10 # Cuantas "cuadras" se mueve el repartidor
     costo_repartidor = 2
     costo_camion_por_unidad = 5
     cant_refrigerados = client_count // 8
     cant_exculsivos = client_count // 4
     tmp_path = "/tmp/instancia"
-
     np.random.seed(seed)
 
-    for i in range(4):
-        #clients = muestra_clientes_uniforme(client_count, grid_size)
-        clients = muestra_clientes_clusters(client_count, grid_size, 4, 10)
+    costos_por_modelo = pd.DataFrame(columns=["modelo_tsp", "modelo_repartidores", "deseable_cuatro", "deseable_exclusivos"])
+
+    for i in range(15):
+        fila_df = {}
+
+        clients = muestra_clientes_uniforme(client_count, grid_size)
+        #clients = muestra_clientes_clusters(client_count, grid_size, 4, 10)
         exclusivos = np.random.choice(np.arange(client_count), size=cant_exculsivos, replace=False)
         refrigerados = np.random.choice(np.arange(client_count), size=cant_refrigerados, replace=False)
 
         distancias, costos = generar_grafo_completo(clients, costo_camion_por_unidad)
-        #distancias, costos = generar_grafo_ralo(clients, costo_camion_por_unidad, 0.65)
+        # distancias, costos = generar_grafo_ralo(clients, costo_camion_por_unidad, 0.65)
 
         write_instance(
             distancias,
@@ -81,9 +177,14 @@ def main():
 
         valor_obj, instancia, solucion = prob.obtener_solucion()
 
-        plotter = GraficarSolucion(instancia, solucion)
-        plotter.dibujar_clientes_en_grilla(grid_size, clients, f"plano_clusters_tsp_{i}.png")
-        plotter.dibujar_grafo(f"grafo_clusters_tsp_{i}.png")
+        fila_df["modelo_tsp"] = valor_obj
+
+        prob._modelo.end()
+        del prob
+
+        #plotter = GraficarSolucion(instancia, solucion)
+        #plotter.dibujar_clientes_en_grilla(grid_size, clients, f"plano_uniforme_tsp_{i}.png")
+        #plotter.dibujar_grafo(f"grafo_uniforme_tsp_{i}.png")
 
         # Modelo repartidores
         instancia = cargar_instancia(tmp_path)
@@ -94,9 +195,14 @@ def main():
 
         valor_obj, instancia, solucion = prob.obtener_solucion()
 
-        plotter = GraficarSolucion(instancia, solucion)
-        plotter.dibujar_clientes_en_grilla(grid_size, clients, f"plano_clusters_repartidores_{i}.png")
-        plotter.dibujar_grafo(f"grafo_clusters_repartidores_{i}.png")
+        fila_df["modelo_repartidores"] = valor_obj
+
+        prob._modelo.end()
+        del prob
+
+        #plotter = GraficarSolucion(instancia, solucion)
+        #plotter.dibujar_clientes_en_grilla(grid_size, clients, f"plano_uniforme_repartidores_{i}.png")
+        #plotter.dibujar_grafo(f"grafo_uniforme_repartidores_{i}.png")
 
         # Deseable clientes exclusivos
         instancia = cargar_instancia(tmp_path)
@@ -107,9 +213,14 @@ def main():
 
         valor_obj, instancia, solucion = prob.obtener_solucion()
 
-        plotter = GraficarSolucion(instancia, solucion)
-        plotter.dibujar_clientes_en_grilla(grid_size, clients, f"plano_clusters_exclusivos_{i}.png")
-        plotter.dibujar_grafo(f"grafo_clusters_exclusivos_{i}.png")
+        fila_df["deseable_exclusivos"] = valor_obj
+
+        prob._modelo.end()
+        del prob
+
+        #plotter = GraficarSolucion(instancia, solucion)
+        #plotter.dibujar_clientes_en_grilla(grid_size, clients, f"plano_uniforme_exclusivos_{i}.png")
+        #plotter.dibujar_grafo(f"grafo_uniforme_exclusivos_{i}.png")
 
         # Deseable 4 o mas clientes por repartidor
         instancia = cargar_instancia(tmp_path)
@@ -120,10 +231,134 @@ def main():
 
         valor_obj, instancia, solucion = prob.obtener_solucion()
 
-        plotter = GraficarSolucion(instancia, solucion)
-        plotter.dibujar_clientes_en_grilla(grid_size, clients, f"plano_clusters_cuatro_o_mas_{i}.png")
-        plotter.dibujar_grafo(f"grafo_clusters_cuatro_o_mas_{i}.png")
+        fila_df["deseable_cuatro"] = valor_obj
 
+        prob._modelo.end()
+        del prob
+
+        #plotter = GraficarSolucion(instancia, solucion)
+        #plotter.dibujar_clientes_en_grilla(grid_size, clients, f"plano_uniforme_cuatro_o_mas_{i}.png")
+        #plotter.dibujar_grafo(f"grafo_uniforme_cuatro_o_mas_{i}.png")
+
+        costos_por_modelo.loc[len(costos_por_modelo)] = fila_df
+
+        costos_por_modelo.to_csv(f'uniforme_{i}.csv', index=False)
+
+    costos_por_modelo.to_csv('uniforme.csv', index=False)
+
+def generar_instancias_evaluacion_modelos_clustered():
+    seed = sum(map(ord, "branch and bound"))
+    grid_size = 75
+    client_count = 25
+    max_repartidor = 10 # Cuantas "cuadras" se mueve el repartidor
+    costo_repartidor = 2
+    costo_camion_por_unidad = 5
+    cant_refrigerados = client_count // 8
+    cant_exculsivos = client_count // 4
+    tmp_path = "/tmp/instancia"
+    np.random.seed(seed)
+
+    costos_por_modelo = pd.DataFrame(columns=["modelo_tsp", "modelo_repartidores", "deseable_cuatro", "deseable_exclusivos"])
+
+    for i in range(15):
+        fila_df = {}
+
+        # clients = muestra_clientes_uniforme(client_count, grid_size)
+        clients = muestra_clientes_clusters(client_count, grid_size, 4, 10)
+        exclusivos = np.random.choice(np.arange(client_count), size=cant_exculsivos, replace=False)
+        refrigerados = np.random.choice(np.arange(client_count), size=cant_refrigerados, replace=False)
+
+        distancias, costos = generar_grafo_completo(clients, costo_camion_por_unidad)
+        # distancias, costos = generar_grafo_ralo(clients, costo_camion_por_unidad, 0.65)
+
+        write_instance(
+            distancias,
+            costos,
+            exclusivos,
+            refrigerados,
+            costo_repartidor,
+            max_repartidor,
+            costo_camion_por_unidad,
+            tmp_path
+        )
+
+        # Modelo TSP
+        instancia = cargar_instancia(tmp_path)
+        prob = ModeloTSP(instancia)
+        mem_limit = lambda c: c.parameters.mip.limits.treememory.set(1024 * 32)  # 32GB
+        tmp_dir = lambda c: c.parameters.workdir.set("/home/jorge/tmp/cplex")
+        prob.resolver(mem_limit, tmp_dir)
+
+        valor_obj, instancia, solucion = prob.obtener_solucion()
+
+        fila_df["modelo_tsp"] = valor_obj
+
+        prob._modelo.end()
+        del prob
+
+        #plotter = GraficarSolucion(instancia, solucion)
+        #plotter.dibujar_clientes_en_grilla(grid_size, clients, f"plano_clusters_tsp_{i}.png")
+        #plotter.dibujar_grafo(f"grafo_clusters_tsp_{i}.png")
+
+        # Modelo repartidores
+        instancia = cargar_instancia(tmp_path)
+        prob = ModeloConRepartidores(instancia)
+        mem_limit = lambda c: c.parameters.mip.limits.treememory.set(1024 * 32)  # 32GB
+        tmp_dir = lambda c: c.parameters.workdir.set("/home/jorge/tmp/cplex")
+        prob.resolver(mem_limit, tmp_dir)
+
+        valor_obj, instancia, solucion = prob.obtener_solucion()
+
+        fila_df["modelo_repartidores"] = valor_obj
+
+        prob._modelo.end()
+        del prob
+
+        #plotter = GraficarSolucion(instancia, solucion)
+        #plotter.dibujar_clientes_en_grilla(grid_size, clients, f"plano_clusters_repartidores_{i}.png")
+        #plotter.dibujar_grafo(f"grafo_clusters_repartidores_{i}.png")
+
+        # Deseable clientes exclusivos
+        instancia = cargar_instancia(tmp_path)
+        prob = VarianteClientesExclusivos(instancia)
+        mem_limit = lambda c: c.parameters.mip.limits.treememory.set(1024 * 32)  # 32GB
+        tmp_dir = lambda c: c.parameters.workdir.set("/home/jorge/tmp/cplex")
+        prob.resolver(mem_limit, tmp_dir)
+
+        valor_obj, instancia, solucion = prob.obtener_solucion()
+
+        fila_df["deseable_exclusivos"] = valor_obj
+
+        prob._modelo.end()
+        del prob
+
+        #plotter = GraficarSolucion(instancia, solucion)
+        #plotter.dibujar_clientes_en_grilla(grid_size, clients, f"plano_clusters_exclusivos_{i}.png")
+        #plotter.dibujar_grafo(f"grafo_clusters_exclusivos_{i}.png")
+
+        # Deseable 4 o mas clientes por repartidor
+        instancia = cargar_instancia(tmp_path)
+        prob = VarianteRepartidorCuatroOMasClientes(instancia)
+        mem_limit = lambda c: c.parameters.mip.limits.treememory.set(1024 * 32)  # 32GB
+        tmp_dir = lambda c: c.parameters.workdir.set("/home/jorge/tmp/cplex")
+        prob.resolver(mem_limit, tmp_dir)
+
+        valor_obj, instancia, solucion = prob.obtener_solucion()
+
+        fila_df["deseable_cuatro"] = valor_obj
+
+        prob._modelo.end()
+        del prob
+
+        #plotter = GraficarSolucion(instancia, solucion)
+        #plotter.dibujar_clientes_en_grilla(grid_size, clients, f"plano_clusters_cuatro_o_mas_{i}.png")
+        #plotter.dibujar_grafo(f"grafo_clusters_cuatro_o_mas_{i}.png")
+
+        costos_por_modelo.loc[len(costos_por_modelo)] = fila_df
+
+        costos_por_modelo.to_csv(f'clusters_{i}.csv', index=False)
+
+    costos_por_modelo.to_csv('clusters.csv', index=False)
 
 def dibujar_clientes_en_grilla(clients, grid_size):
     plt.figure(figsize=(6, 6))
