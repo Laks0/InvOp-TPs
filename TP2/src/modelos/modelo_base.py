@@ -13,6 +13,7 @@ class ModeloBase:
         self._instancia = instancia
         self._modelo = cplex.Cplex()
         self._armar_lp()
+        self._liberado = False
 
     def _agregar_variables(self):
         raise RuntimeError("Implementar en subclases")
@@ -58,3 +59,12 @@ class ModeloBase:
         for variable, nombre in zip(x, nombres):
             if variable > TOLERANCE:
                 print(nombre, variable)
+    
+    def liberar(self):
+        """Libera recursos del modelo CPLEX"""
+        if not self._liberado:
+            self._modelo.end()
+            self._liberado = True
+
+    def __del__(self):
+        self.liberar()
