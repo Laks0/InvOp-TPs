@@ -229,8 +229,17 @@ Para analizar el rendimiento de las distintas metodologías, definimos y generam
 \end{figure}
 
 \subsection{Análisis por metodología e instancia}
-Con el fin de relevar la diferencia en costos, generamos $?$ instancias de los dos tipos de distribuciones y evaluamos cada una con las cuatro metodologías distintas. 
-En la figura $?$ se muestran los resultados donde, como era esperable para las instancias con clusters, cualquier metodología con repartidores en general va a tener un menor costo de reparto que la metodología actual. 
+Con el fin de relevar la diferencia en costos, generamos 50 instancias uniformemente distribuidas y 32 instancias del tipo cluster, menos cantidad debido a que fueron instancias que requirieron mucho mas tiempo de procesamiento, muy probablemente por que en estas instancias las variables de repartidores juegan un rol crucial para reducir costos. Cada una de las instancias, independientemente del tipo, las evaluamos con las cuatro metodologías distintas. 
+En la figura~\ref{fig:barras_costos} se muestran los resultados donde, como era esperable para las instancias con clusters, cualquier metodología con repartidores en general va a tener un menor costo de reparto que la metodología actual. 
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.7\textwidth]{figuras/barras_costos.png}
+	\caption{Gráfico de barras comparando valores objetivos obtenidos}
+	\label{fig:barras_costos}
+\end{figure}
+
+\clearpage
 
 \section{Tiempos de cómputo CPLEX}
 
