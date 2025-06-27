@@ -313,7 +313,7 @@ def main():
     armar_lp(prob,instancia)
 
     # Resolucion del modelo
-    #resolver_lp(prob)
+    resolver_lp(prob)
 
     # Obtencion de la solucion
     #mostrar_solucion(prob,instancia)
