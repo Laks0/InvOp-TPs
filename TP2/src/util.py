@@ -118,8 +118,8 @@ class GraficarSolucion:
             node_size=600,
             font_size=10,
             font_weight='bold',
-            edge_color=coloreo_aristas,  # Apply the list of colors here
-            width=2.0  # Make edges thicker
+            edge_color=coloreo_aristas,
+            width=2.0
         )
         plt.savefig(export_path, bbox_inches='tight', dpi=300)
         plt.close()
