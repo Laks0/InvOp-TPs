@@ -18,6 +18,8 @@
     pdftitle={Overleaf Example},
     pdfpagemode=FullScreen,
 	}
+	
+\setlength{\parskip}{1em}   % Espacio vertical entre párrafos
 
 \begin{document}
 
@@ -79,13 +81,14 @@ Basado en el modelo anterior, agregamos variables para distinguir cuándo un cli
 	
 \vspace{5mm}
 
+\clearpage
+
 	Entonces con $n = cant\_clientes$, buscamos:
 
 	\[
 		\text{Min} \sum_{\substack{v_i, v_j \in V \\ i \neq j}} c_{ij} x_{ij} 
 		+ costo\_repartidor\, b_{ij}
 		\]
-\vspace{30mm}
 
 	s.a.
 
@@ -134,20 +137,7 @@ Basado en el modelo anterior, agregamos variables para distinguir cuándo un cli
 	
 	No hay cambios en las variables, función objetivo o las demás restricciones.
 
-
-	\section{Experimentación}
-
-	Usamos un generador de instancias aleatorias para generar mapas donde algunos caminos son posibles y otros no, asignando distanias y costos al azar, así como también qué clientes necesitan refrigeración o tienen que vistiarse con camión en el último modelo. También sacamos datos de posiciones de ciudades de \url{https://people.sc.fsu.edu/~jburkardt/datasets/cities/cities.html}, usamos las distancias y las modificamos aleatoriamente para crear una instancia con costos proporcionales. De esta página tomamos las instancias \texttt{wg59} con 59 ciudades de Alemania Oriental, y \texttt{qa194} con 194 ciudades de Catar. Nos interesó crear instancias con información geográfica para tener una distribución orgánica de los puntos, \texttt{qa194} en particular, además de ser una instancia grande, es interesante porque la densidad de los puntos es muy poco uniforme.
-
-	Para decidir si un viaje entre dos puntos es posible agregamos aleatoriamente aristas entre los puntos, llamamos \textit{ralas} a las instancias donde la probabilidad de agregar una arista es de $0.3$ y \textit{densas} cuando la probabilidad es de $0.9$. Siempre asegurándonos de que el grafo resultante quede conexo.
-
-	También con los puntos creamos instancias donde la proporción de refrigerados es del $70\%$ y otras donde es el $10\%$. Hicimos lo mismo con los exclusivos.
-
-	Por último también agregamos instancias donde la distancia máxima del repartidor era muy corta o muy larga, y donde el repartidor era muy barato o muy caro. Por defecto la distancia máxima del repartidor la tomamos como la mediana de todas las distancias, pero para representar una distancia máxima más corta usamos el primer quintil, y para una más larga el tercero. Hicimos lo mismo con los costos para representar cuándo el repartidor es más caro o más barato.
-
-
-\section{Análisis de sensibilidad de los parámetros del modelo}
-
+\clearpage
 
 \section{Comparación de costos entre metodologías}
 Para analizar el rendimiento de las distintas metodologías, definimos y generamos dos tipos distintos de instancias, uno con clientes uniformemente distribuidos y el otro conformado por varios clusters distintos donde se concentran grupos de clientes dentro de un radio. En las figuras~\ref{fig:compuesta1} y~\ref{fig:compuesta2} respectivamente, se puede apreciar la diferencia de los tipos.
@@ -229,15 +219,63 @@ Para analizar el rendimiento de las distintas metodologías, definimos y generam
 \end{figure}
 
 \subsection{Análisis por metodología e instancia}
-Con el fin de relevar la diferencia en costos, generamos 50 instancias uniformemente distribuidas y 32 instancias del tipo cluster, menos cantidad debido a que fueron instancias que requirieron mucho mas tiempo de procesamiento, muy probablemente por que en estas instancias las variables de repartidores juegan un rol crucial para reducir costos. Cada una de las instancias, independientemente del tipo, las evaluamos con las cuatro metodologías distintas. 
-En la figura~\ref{fig:barras_costos} se muestran los resultados donde, como era esperable para las instancias con clusters, cualquier metodología con repartidores en general va a tener un menor costo de reparto que la metodología actual. 
+Con el objetivo de relevar diferencias en los costos logísticos, generamos dos tipos de instancias: 50 instancias con distribución uniforme y 32 instancias con estructura de tipo cluster. La cantidad de instancias del segundo tipo fue menor debido a que implicaron un tiempo de cómputo significativamente mayor, probablemente porque en estos casos las variables asociadas a los repartidores juegan un rol más determinante en la reducción de costos.
+
+El criterio para la elección de los parámetros se basó en generar instancias con 20 clientes, buscando que fueran ejecutables en un tiempo razonable. Por otro lado, tanto el rango de movimiento como los costos asignados al repartidor y al camión fueron seleccionados de manera tal que permitieran un balance interesante entre ambas alternativas, favoreciendo como se esperaría en la realidad, el costo de los repartidores.
+\clearpage
+
+\begin{table}[htbp]
+	\centering
+	\begin{tabular}{ll}
+		\hline
+		\textbf{Parámetro} & \textbf{Valor} \\
+		\hline
+		Tamaño del grid & $50 \times 50$ \\
+		Cantidad de clientes & 20 \\
+		Rango del repartidor & 10 unidades \\
+		Costo del repartidor (por unidad) & 2 \\
+		Costo del camión (por unidad) & 5 \\
+		Clientes refrigerados & 2 \\
+		Clientes con entrega exclusiva & 5 \\
+		\hline
+	\end{tabular}
+	\caption{Parámetros utilizados para la generación de instancias}
+	\label{tab:parametros_instancias}
+\end{table}
+
+
+Todas las instancias, independientemente del tipo, fueron evaluadas utilizando los cuatro modelos propuestos. En la Figura~\ref{fig:comparacion_costos} se presentan los resultados obtenidos. Como era de esperarse, cualquier enfoque que incluya repartidores tiende a generar un menor costo total en comparación con el modelo TSP.
+
+Tampoco resulta sorprendente que las instancias del tipo cluster presenten una mayor reducción de costos en comparación con las de distribución uniforme. Esto se debe a que, en estos casos, los recorridos entre clientes suelen ser más cortos y, además, facilita las condiciones para el uso de repartidores, lo que incrementa su impacto en la reducción del costo total.
+
+Por otra parte, todas las instancias que los modelos MR4 y MRE, que incorporan restricciones adicionales respecto al modelo MR, presentan consistentemente un costo operativo mayor. Este resultado es coherente con lo esperado, dado que ambas metodologías derivan de MR, pero limitan el conjunto de soluciones.
+
+\subsection{Conclusión}
+Los resultados muestran que todas las metodologías propuestas permiten una reducción en el costo operativo de reparto en comparación con enfoques sin repartidores, tanto en instancias con clientes en una distribución uniforme como en aquellas con clusters.
+
+En particular, la metodología con restricciones (MR) propuesta primero, resultó ser la de menor costo, alcanzando una mejora de hasta un -26,7\% en promedio frente a la metodología actual (TSP). En caso de tener que trabajar con alguna de las dos restricciones que eran deseables, se observó que la metodología con entregas exclusivas (MRE) presentó un impacto menor en el aumento de costos en comparación con MR4.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.7\textwidth]{figuras/barras_costos.png}
-	\caption{Gráfico de barras comparando valores objetivos obtenidos}
-	\label{fig:barras_costos}
+	
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figuras/barras_costos.png}
+		\caption{Valores objetivos promedio para cada tipo de distribución y metodología.}
+		\label{fig:barras_costos}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figuras/barras_diferencias_pct.png}
+		\caption{Diferencia promedio de cada instancia con respecto al costo con TSP.}
+		\label{fig:dif_pct_costos}
+	\end{subfigure}
+	
+	\caption{Resultados agregados por metodología e instancia.}
+	\label{fig:comparacion_costos}
 \end{figure}
+
 
 \clearpage
 
