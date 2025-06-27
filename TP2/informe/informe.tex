@@ -9,6 +9,7 @@
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{subcaption} % Para subfiguras
+\usepackage{xcolor}
 
 \hypersetup{
     colorlinks=true,
@@ -303,5 +304,28 @@ Se comparó en el cuadro~\ref{tab:comparacion_busqueda_dfs} el valor de la funci
 \end{table}
 
 Como se puede observar en ninguna de las instancias se observó una mejora de la solución factible obtenida luego de 10 minutos. En la primera y última instancia el resultado es casi el mismo y en la segunda el considerablemente mayor que los parámetros predeterminados de CPLEX.
+
+\subsection{Selección de variable}
+
+En el cuadro~\ref{tab:comparacion_varsel} se ve un análisis similar al de la exploración del árbol pero variando la estrategia de selección de variable. Es importante que la experimentación se hizo en una computadora distinta a la anterior así que los resultados solo se pueden analizar entre sí. En cada celda se escribe el valor objetivo alcanzado y la mejora en relación al valor por defecto de CPLEX.
+
+\begin{table}[htbp]
+	\centering
+	\begin{tabular}{llllll}
+		\hline
+		\texttt{MININFEAS} & \texttt{DEFAULT} & \texttt{MAXINFEAS} & \texttt{PSEUDO} & \texttt{STRONG} & \texttt{PSEUDOREDUCED} \\
+		\hline
+		1539 \textcolor{olive}{(0.05\%)} & 1547 & 1270 \textcolor{olive}{(21.81\%)} & 1659 \textcolor{purple}{(-7.25\%)} & 1392 \textcolor{olive}{(11.14\%)}  & 1288 \textcolor{olive}{(20.11\%)} \\
+		1527 \textcolor{olive}{(6.75\%)} & 1630 & 1522 \textcolor{olive}{(7.10\%)}  & 1442 \textcolor{olive}{(13.04\%)} & 1551 \textcolor{olive}{(5.09\%) }  & 1366 \textcolor{olive}{(19.33\%)} \\
+		1489 \textcolor{olive}{(4.23\%)} & 1552 & 1419 \textcolor{olive}{(9.37\%)}  & 1618 \textcolor{purple}{(-4.25\%)} & 1668 \textcolor{purple}{(-7.47\%)}  & 1308 \textcolor{olive}{(18.65\%)} \\
+		\hline
+	\end{tabular}
+	\caption{Comparación de estrategias de búsqueda}
+	\label{tab:comparacion_varsel}
+\end{table}
+
+Se puede observar en los resultados que algunas estrategias como la de \textit{pseudo costs} y \textit{strong branching} varían en resultados dependiendo fuertemente de la instancia. Las estrategias de \textit{maximum infeasibility} y \textit{minimum infeasibility} dieron consistentemente resultados mejores respecto a la estrategia automática, y los resultados más consistentemente mejores se dieron con la estrategia de \textit{pseudo reduced costs}, que dio mejoras significativas.
+
+Concluimos que si no se necesita una solución óptima y se busca llegar a una suficientemente buena en un tiempo limitado, puede convenir usar la estrategia de \textit{pseudo reduced costs}.
 
 \end{document}

@@ -1,6 +1,0 @@
-Metadata-Version: 2.1
-Name: cplex
-Version: 22.1.1.0
-Summary: A Python interface to the CPLEX Callable Library.
-Home-page: https://www.ibm.com/products/ilog-cplex-optimization-studio
-Author: IBM
