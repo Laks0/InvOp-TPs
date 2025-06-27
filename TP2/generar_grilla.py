@@ -42,17 +42,17 @@ def write_instance(distancias, costos, exclusivos, refrigerados, costo_repartido
 
 
 def main():
-    generar_instancias_evaluacion_modelos_clustered()
-    generar_instancias_evaluacion_modelos_uniformes()
-    #testeos_rendimiento()
+    #generar_instancias_evaluacion_modelos_clustered()
+    #generar_instancias_evaluacion_modelos_uniformes()
+    testeos_rendimiento()
 
 
 
 def testeos_rendimiento():
     seed = sum(map(ord, "Programación lineal entera"))
     grid_size = 100
-    client_count = 30
-    max_repartidor = 8  # Cuantas "cuadras" se mueve el repartidor
+    client_count = 75
+    max_repartidor = 12  # Cuantas "cuadras" se mueve el repartidor
     costo_repartidor = 2
     costo_camion_por_unidad = 5
     cant_refrigerados = client_count // 8
@@ -63,15 +63,17 @@ def testeos_rendimiento():
     tiempos_dfs = []
     tiempos_default = []
 
-    for _ in range(5):
+    df = pd.DataFrame(columns=["default", "no_default"])
 
-        clients = muestra_clientes_uniforme(client_count, grid_size)
-        #clients = muestra_clientes_clusters(client_count, grid_size, 7, 10)
+    for i in range(3):
+
+        #clients = muestra_clientes_uniforme(client_count, grid_size)
+        clients = muestra_clientes_clusters(client_count, grid_size, 7, 10)
         exclusivos = np.random.choice(np.arange(client_count), size=cant_exculsivos, replace=False)
         refrigerados = np.random.choice(np.arange(client_count), size=cant_refrigerados, replace=False)
 
-        #distancias, costos = generar_grafo_completo(clients, costo_camion_por_unidad)
-        distancias, costos = generar_grafo_ralo(clients, costo_camion_por_unidad, 0.6)
+        distancias, costos = generar_grafo_completo(clients, costo_camion_por_unidad)
+        #distancias, costos = generar_grafo_ralo(clients, costo_camion_por_unidad, 0.6)
 
         write_instance(
             distancias,
@@ -87,13 +89,15 @@ def testeos_rendimiento():
         instancia = cargar_instancia(tmp_path)
         prob = ModeloConRepartidores(instancia)
         mem_limit = lambda c: c.parameters.mip.limits.treememory.set(1024 * 32)  # 32GB
-        tmp_dir = lambda c: c.parameters.workdir.set("/home/jorge/tmp/cplex")
 
         prob._modelo.parameters.randomseed.set(seed)
+        prob._modelo.parameters.timelimit.set(60 * 10) # 10 min
 
         t0 = time.monotonic()
-        prob.resolver(mem_limit, tmp_dir)
+        prob.resolver(mem_limit)
         t1 = time.monotonic()
+
+        objectivo_default, _, _ = prob.obtener_solucion()
 
         tiempo_default = t1 - t0
         tiempos_default.append(tiempo_default)
@@ -101,9 +105,9 @@ def testeos_rendimiento():
         instancia = cargar_instancia(tmp_path)
         prob = ModeloConRepartidores(instancia)
         mem_limit = lambda c: c.parameters.mip.limits.treememory.set(1024 * 32)  # 32GB
-        tmp_dir = lambda c: c.parameters.workdir.set("/home/jorge/tmp/cplex")
 
         prob._modelo.parameters.randomseed.set(seed)
+        prob._modelo.parameters.timelimit.set(60 * 10) # 10 min
 
         # Busqueda DFS
         #prob._modelo.parameters.mip.strategy.nodeselect.set(prob._modelo.parameters.mip.strategy.nodeselect.values.depth_first)
@@ -123,11 +127,21 @@ def testeos_rendimiento():
         # Con todas las semillas fijas estas corridas deberían ser deterministicas (salvo por variaciones en la carga de la computadora)
 
         t0 = time.monotonic()
-        prob.resolver(mem_limit, tmp_dir)
+        prob.resolver(mem_limit)
         t1 = time.monotonic()
+
+        objectivo_no_default, _, _ = prob.obtener_solucion()
 
         tiempo_dfs = t1 - t0
         tiempos_dfs.append(tiempo_dfs)
+
+        df.loc[len(df)] = {
+            "default": objectivo_default,
+            "no_default": objectivo_no_default
+        }
+
+        df.to_csv(f'objetivo_{i}.csv', index=False)
+
 
     print("Tiempos default:", tiempos_default)
     print("Tiempos DFS: ", tiempos_dfs)
