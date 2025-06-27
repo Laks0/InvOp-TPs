@@ -232,7 +232,7 @@ El criterio para la elección de los parámetros se basó en generar instancias 
 		\hline
 		Tamaño del grid & $50 \times 50$ \\
 		Cantidad de clientes & 20 \\
-		Rango del repartidor & 10 unidades \\
+		Rango del repartidor & 10 (en norma L1) \\
 		Costo del repartidor (por unidad) & 2 \\
 		Costo del camión (por unidad) & 5 \\
 		Clientes refrigerados & 2 \\
@@ -279,6 +279,29 @@ En particular, la metodología con restricciones (MR) propuesta primero, result�
 
 \clearpage
 
-\section{Tiempos de cómputo CPLEX}
+\section{Experimentación con parámetros de CPLEX}
+
+Se evaluaron instancias de 75 clientes distribuidos en 7 clústers dentro de una grilla de $100 \times 100$ con el modelo de repartidores (MR). La metodología del experimento es comparar bajo una misma computadora cuál es el resultado de la función objetivo luego de 10 minutos de cómputo. Esto es para determinar si hay alguna configuración de parámetros que sirva como una heurística para obtener mejores soluciones factibles que la configuración predeterminada dado un tiempo de cómputo limitado.
+
+\subsection{Exploración DFS}
+
+Se comparó en el cuadro~\ref{tab:comparacion_busqueda_dfs} el valor de la función objetivo luego de 10 minutos de cómputo para tres instancias distintas con la exploración predeterminada de CPLEX (best bound) contra una búsqueda en profundidad del árbol.
+
+\begin{table}[htbp]
+	\centering
+	\begin{tabular}{llc}
+		\hline
+		\textbf{Best bound (default)} & \textbf{Depth first search} & \textbf{Diferencia objetivo} \\
+		\hline
+		1491 & 1492 & 0.07\% \\
+		1474 & 1529 & 3.60\% \\
+		1253 & 1257 & 0.32\% \\
+		\hline
+	\end{tabular}
+	\caption{Comparación de estrategias de búsqueda}
+	\label{tab:comparacion_busqueda_dfs}
+\end{table}
+
+Como se puede observar en ninguna de las instancias se observó una mejora de la solución factible obtenida luego de 10 minutos. En la primera y última instancia el resultado es casi el mismo y en la segunda el considerablemente mayor que los parámetros predeterminados de CPLEX.
 
 \end{document}
