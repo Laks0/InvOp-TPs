@@ -12,7 +12,7 @@ class HookJeeves(metodo):
         dim = punto_inicial.shape[0]
         x_0 = punto_inicial
         for i in range(dim):
-            ei = np.array([0 if j!=i else 1 for j in range(dim)])
+            ei = np.eye(dim)[i]
             opt_result = minimize_scalar(lambda l: W(x_0 + l*ei, self._puntos, self._pesos))
             x_0 = x_0 + opt_result.x*ei
         return x_0
