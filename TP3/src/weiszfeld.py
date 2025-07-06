@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import concurrent.futures
 
+from numpy import dtype
+
+
 class Weiszfeld2:
     def __init__(self, puntos, pesos):
         """
@@ -109,7 +112,7 @@ class Weiszfeld1:
         Aplica el algoritmo iterativo de Weiszfeld hasta satisfacer _criterio_de_parada.
         """
         puntos = self._puntos
-        (_, dimension_puntos) = puntos.shape
+        (cantidad_puntos, dimension_puntos) = puntos.shape
         (dimension_punto_inicial, ) = punto_inicial.shape
         assert dimension_puntos == dimension_punto_inicial
         pesos_col = self._pesos.reshape(-1, 1)
@@ -122,44 +125,36 @@ class Weiszfeld1:
             divisor = np.sum(pesos_col / norma_col, axis=0)
             return dividendo / divisor
 
-        def R(j, norma_p_j):
+        def R(j, norma_p_j, mascara_i_dif_j):
             p_j = puntos[j,:]
-            dividendo = pesos_col * (p_j - puntos)
-            # Parche para hacer sum_i con i != j :)
-            dividendo[j] = np.zeros(dimension_puntos)
-            norma_p_j[j] = 1  # En este punto el denominador de la división va a ser cero, es para evitar dividir por cero
-            divisor = norma_p_j.reshape(-1, 1)
+            dividendo = (pesos_col * (p_j - puntos))[mascara_i_dif_j]
+            divisor = norma_p_j[mascara_i_dif_j].reshape(-1, 1)
             R_j = np.sum(dividendo / divisor, axis=0)
-            norma_p_j[j] = 0.0 # Esta ratonada la hago porque comparto la misma referencia a norma_p_j entre la función R y S
             return R_j
 
-        def S(j, R_j, norma_R_j, norma_p_j):
+        def S(j, R_j, norma_R_j, norma_p_j, mascara_i_dif_j):
             p_j = puntos[j,:]
-            norma_p_j_col = norma_p_j.reshape(-1, 1)
             d_j = -(R_j / norma_R_j)
             dividendo = norma_R_j - pesos[j]
-
-            w_j = pesos_col[j][0]  # Todo sea para no copiar unos bytes en memoria...
-            pesos_col[j] = 0.0
-            norma_p_j[j] = 1.0  # En este punto el denominador de la división va a ser cero, es para evitar dividir por cero
-            divisor = np.sum(pesos_col / norma_p_j_col, axis=0)
-            pesos_col[j] = w_j
-            norma_p_j[j] = 0.0 # Esta ratonada la hago porque comparto la misma referencia a norma_p_j entre la función R y S
+            norma_p_j_col = norma_p_j[mascara_i_dif_j].reshape(-1, 1)
+            divisor = np.sum(pesos_col[mascara_i_dif_j] / norma_p_j_col, axis=0)
             t_j = dividendo / divisor
-
             return p_j + d_j * t_j
 
         while True:
             j = self._indice_de_x_en_puntos(x_0)
             if j is not None:
+                # Esta máscara es para las sumas sobre i donde i != j
+                mascara_i_dif_j = np.ones((cantidad_puntos,), dtype=np.bool)
+                mascara_i_dif_j[j] = False
                 p_j = puntos[j,:]
                 norma_p_j = np.linalg.norm(p_j - puntos, axis=1)
-                R_j = R(j, norma_p_j)
+                R_j = R(j, norma_p_j, mascara_i_dif_j)
                 norma_R_j = np.linalg.norm(R_j)
                 if norma_R_j <= pesos[j]:
                     x_1 = p_j
                 else:
-                    x_1 = S(j, R_j, norma_R_j, norma_p_j)
+                    x_1 = S(j, R_j, norma_R_j, norma_p_j, mascara_i_dif_j)
             else:
                 x_1 = T(x_0)
             if np.all(np.isclose(x_0, x_1)):
@@ -186,13 +181,12 @@ class Weiszfeld1:
         return self._iterar_desde_punto(punto_inicial)
 
 if __name__ == "__main__":
-    N = 10000
-    grid_size = 5000
-    #np.random.seed(12345)
-    puntos = np.random.uniform(0, grid_size, (N, 2))
-    pesos = np.ones((N,))
-    pesos[N//2:] = np.random.uniform(0, 100, (N//2, ))
+    N = 10_000_000
+    grid_size = 50000
+    puntos = np.random.uniform(0, grid_size, (N, 30))
+    pesos = np.random.uniform(0, grid_size, (N,))
 
+    """
     w = Weiszfeld2(puntos, pesos)
 
     import time
@@ -201,7 +195,7 @@ if __name__ == "__main__":
     t1 = time.time()
     print(t1-t0)
 
-    """
+    
     plt.figure(figsize=(6, 6))
     plt.scatter(puntos[:, 0], puntos[:, 1], c='blue', label='Puntos', s=100)
     plt.scatter(optimo[0], optimo[1], c='red', label='Óptimo', s=200, marker='*')
@@ -219,9 +213,10 @@ if __name__ == "__main__":
     optimo = w.optimizar()
     t1 = time.time()
     print(t1-t0)
+    print(optimo)
 
     """
-    plt.figure(figsize=(6, 6))
+    plt.figure(figsize=(50, 50))
     plt.scatter(puntos[:, 0], puntos[:, 1], c='blue', label='Puntos', s=100)
     plt.scatter(optimo[0], optimo[1], c='red', label='Óptimo', s=200, marker='*')
     plt.grid(True)
