@@ -4,21 +4,9 @@ import concurrent.futures
 
 from numpy import dtype
 
+from metodos import metodo, generar_instancias
 
-class Weiszfeld2:
-    def __init__(self, puntos, pesos):
-        """
-        Los puntos deben ser una matriz de R^(m x n) y los pesos un vector de R^m.
-        Siendo m la cantidad de puntos y n la dimensión del espacio.
-        """
-        (cantidad_puntos, _) = puntos.shape
-        (cantidad_pesos, ) = pesos.shape
-        assert cantidad_puntos == cantidad_pesos
-        assert np.all(pesos > 0)
-
-        self._puntos = puntos
-        self._pesos = pesos
-
+class Weiszfeld2(metodo):
     def _iterar_desde_punto(self, punto_inicial):
         """
         Aplica el algoritmo iterativo de Weiszfeld hasta satisfacer _criterio_de_parada.
@@ -93,20 +81,7 @@ class Weiszfeld2:
         else:
             return punto_inicial
 
-class Weiszfeld1:
-    def __init__(self, puntos, pesos):
-        """
-        Los puntos deben ser una matriz de R^(m x n) y los pesos un vector de R^m.
-        Siendo m la cantidad de puntos y n la dimensión del espacio.
-        """
-        (cantidad_puntos, _) = puntos.shape
-        (cantidad_pesos, ) = pesos.shape
-        assert cantidad_puntos == cantidad_pesos
-        assert np.all(pesos > 0)
-
-        self._puntos = puntos
-        self._pesos = pesos
-
+class Weiszfeld1(metodo):
     def _iterar_desde_punto(self, punto_inicial):
         """
         Aplica el algoritmo iterativo de Weiszfeld hasta satisfacer _criterio_de_parada.
@@ -172,19 +147,8 @@ class Weiszfeld1:
         except IndexError:
             return None
 
-    def _seleccionar_punto_inicial(self):
-        puntos = self._puntos
-        return puntos[0,:]
-
-    def optimizar(self):
-        punto_inicial = self._seleccionar_punto_inicial()
-        return self._iterar_desde_punto(punto_inicial)
-
 if __name__ == "__main__":
-    N = 10_000_000
-    grid_size = 50000
-    puntos = np.random.uniform(0, grid_size, (N, 30))
-    pesos = np.random.uniform(0, grid_size, (N,))
+    puntos, pesos = generar_instancias()
 
     """
     w = Weiszfeld2(puntos, pesos)
