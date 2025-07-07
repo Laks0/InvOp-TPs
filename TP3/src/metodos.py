@@ -37,3 +37,4 @@ def generar_instancias(N = 10_000, grid_size = 500, dimension = 30):
     puntos = np.random.uniform(0, grid_size, (N, dimension))
     pesos = np.random.uniform(0, grid_size, (N,))
     return puntos, pesos
+

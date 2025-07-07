@@ -87,6 +87,7 @@ class Weiszfeld1(metodo):
         Aplica el algoritmo iterativo de Weiszfeld hasta satisfacer _criterio_de_parada.
         """
         puntos = self._puntos
+        pesos = self._pesos
         (cantidad_puntos, dimension_puntos) = puntos.shape
         (dimension_punto_inicial, ) = punto_inicial.shape
         assert dimension_puntos == dimension_punto_inicial

@@ -1,13 +1,8 @@
-import matplotlib.pyplot as plt
 import numpy as np
-import concurrent.futures
-
 from scipy.optimize import minimize_scalar
-from numpy import dtype
-
 from metodos import metodo, generar_instancias, W
 
-class HookJeeves(metodo):
+class HookeJeeves(metodo):
     def _iterar_coordenado(self, punto_inicial):
         dim = punto_inicial.shape[0]
         x_0 = punto_inicial
@@ -31,6 +26,6 @@ class HookJeeves(metodo):
 
 if __name__ == "__main__":
     puntos, pesos = generar_instancias()
-    h = HookJeeves(puntos, pesos)
+    h = HookeJeeves(puntos, pesos)
     optimo = h.optimizar()
     print(optimo)
