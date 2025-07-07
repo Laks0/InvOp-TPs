@@ -2,18 +2,25 @@ import time
 from hookeJeeves import HookeJeeves
 from weiszfeld import Weiszfeld1
 from descenso import Descenso
-from metodos import generar_instancias, W
+from metodos import generar_instancias, W, grafico_instancias_2d
 
 if __name__ == "__main__":
-    puntos, pesos = generar_instancias()
-
+    N = 100
+    grid_size = 300
+    dimension = 2
+    puntos, pesos = generar_instancias(N, grid_size, dimension)
+    
+    if dimension == 2:
+        grafico_instancias_2d(puntos, pesos, grid_size)
+        
     hj = HookeJeeves(puntos, pesos)
     t0 = time.time()
     opt_hj = hj.optimizar()
     t1 = time.time()
 
     print("Hooke Jeeves: ", t1-t0)
-    print("optimo: ", W(opt_hj, puntos, pesos))
+    print("Óptimo: ", W(opt_hj, puntos, pesos))
+    print("Punto: ", opt_hj)
     print("-"*30)
 
     wz = Weiszfeld1(puntos, pesos)
@@ -22,7 +29,8 @@ if __name__ == "__main__":
     t1 = time.time()
 
     print("Weiszfeld: ", t1-t0)
-    print("optimo: ", W(opt_wz, puntos, pesos))
+    print("Óptimo: ", W(opt_wz, puntos, pesos))
+    print("Punto: ", opt_wz)
     print("-"*30)
     
     dg = Descenso(puntos, pesos, 1e-7)
@@ -31,6 +39,7 @@ if __name__ == "__main__":
     t1 = time.time()
 
     print("Descenso de gradiente: ", t1-t0)
-    print("optimo: ", W(opt_dg, puntos, pesos))
+    print("Óptimo: ", W(opt_dg, puntos, pesos))
+    print("Punto: ", opt_dg)
     print("-"*30)
     

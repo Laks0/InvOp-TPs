@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import concurrent.futures
+import os
+
 
 from numpy import dtype
 
@@ -37,4 +39,26 @@ def generar_instancias(N = 10_000, grid_size = 500, dimension = 30):
     puntos = np.random.uniform(0, grid_size, (N, dimension))
     pesos = np.random.uniform(0, grid_size, (N,))
     return puntos, pesos
+
+def grafico_instancias_2d(puntos, pesos, grid_size):
+    nx, ny = grid_size*2, grid_size*2
+    x_vals = np.linspace(0, grid_size, nx)
+    y_vals = np.linspace(0, grid_size, ny)
+    X, Y = np.meshgrid(x_vals, y_vals)
+    
+    Z = np.zeros_like(X)
+    for j in range(ny):
+        for i in range(nx):
+            Z[j,i] = W(np.array([X[j,i], Y[j,i]]), puntos, pesos)
+    
+    plt.figure()
+    contour = plt.contourf(X, Y, Z, levels=30, cmap='viridis')
+    plt.scatter(puntos[:, 0], puntos[:, 1], s=pesos/np.max(pesos)*grid_size/1.7, alpha=0.6, marker='+', linewidths=3, c='darkred')
+    plt.title("Contorno de W(x) y puntos ponderados")
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.colorbar(contour, label="W(x)")
+    
+    os.makedirs('figuras', exist_ok=True)
+    plt.savefig('figuras/contorno_W.png',dpi=300,bbox_inches='tight')
 
