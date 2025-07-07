@@ -18,7 +18,8 @@ if __name__ == "__main__":
     opt_hj = hj.optimizar()
     t1 = time.time()
 
-    print("Hooke Jeeves: ", t1-t0)
+    print("Hooke Jeeves: ", t1-t0, " segundos")
+    print("Iteraciones: ", hj.contador_iteraciones)
     print("Óptimo: ", W(opt_hj, puntos, pesos))
     print("Punto: ", opt_hj)
     print("-"*30)
@@ -28,7 +29,8 @@ if __name__ == "__main__":
     opt_wz = wz.optimizar()
     t1 = time.time()
 
-    print("Weiszfeld: ", t1-t0)
+    print("Weiszfeld: ", t1-t0, " segundos")
+    print("Iteraciones: ", wz.contador_iteraciones)
     print("Óptimo: ", W(opt_wz, puntos, pesos))
     print("Punto: ", opt_wz)
     print("-"*30)
@@ -38,7 +40,8 @@ if __name__ == "__main__":
     opt_dg = dg.optimizar()
     t1 = time.time()
 
-    print("Descenso de gradiente: ", t1-t0)
+    print("Descenso de gradiente: ", t1-t0, " segundos")
+    print("Iteraciones: ", dg.contador_iteraciones)
     print("Óptimo: ", W(opt_dg, puntos, pesos))
     print("Punto: ", opt_dg)
     print("-"*30)

@@ -15,6 +15,7 @@ class HookeJeeves(metodo):
     def _iterar_desde_punto(self, punto_inicial):
         x_0 = punto_inicial
         while True:
+            self.contador_iteraciones += 1
             x_1 = self._iterar_coordenado(x_0)
             dif = x_1 - x_0
             opt_result = minimize_scalar(lambda l: W(x_1 + l*dif, self._puntos, self._pesos))

@@ -118,6 +118,7 @@ class Weiszfeld1(metodo):
             return p_j + d_j * t_j
 
         while True:
+            self.contador_iteraciones += 1
             j = self._indice_de_x_en_puntos(x_0)
             if j is not None:
                 # Esta máscara es para las sumas sobre i donde i != j

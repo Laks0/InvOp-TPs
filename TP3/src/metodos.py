@@ -16,6 +16,7 @@ class metodo:
         (cantidad_pesos, ) = pesos.shape
         assert cantidad_puntos == cantidad_pesos
         assert np.all(pesos > 0)
+        self.contador_iteraciones = 0
 
         self._puntos = puntos
         self._pesos = pesos
@@ -52,8 +53,8 @@ def grafico_instancias_2d(puntos, pesos, grid_size):
             Z[j,i] = W(np.array([X[j,i], Y[j,i]]), puntos, pesos)
     
     plt.figure()
-    contour = plt.contourf(X, Y, Z, levels=30, cmap='viridis')
-    plt.scatter(puntos[:, 0], puntos[:, 1], s=pesos/np.max(pesos)*grid_size/1.7, alpha=0.6, marker='+', linewidths=3, c='darkred')
+    contour = plt.contourf(X, Y, Z, levels=30, cmap='gray')
+    plt.scatter(puntos[:, 0], puntos[:, 1], s=pesos/np.max(pesos)*grid_size/2, alpha=0.6, marker='+', linewidths=2, c='darkred')
     plt.title("Contorno de W(x) y puntos ponderados")
     plt.xlabel("x")
     plt.ylabel("y")

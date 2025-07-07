@@ -23,6 +23,7 @@ class Descenso(metodo):
     def _iterar_desde_punto(self, punto_inicial):
         x = punto_inicial
         while True:
+            self.contador_iteraciones += 1
             alpha = 1
             D = DW(x, self._puntos, self._pesos)
 
