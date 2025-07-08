@@ -1,4 +1,5 @@
 import time
+import os
 from hookeJeeves import HookeJeeves
 from weiszfeld import Weiszfeld1
 from descenso import Descenso
@@ -9,9 +10,9 @@ if __name__ == "__main__":
     grid_size = 300
     dimension = 2
     puntos, pesos = generar_instancias(N, grid_size, dimension)
-    
+    os.makedirs('figuras', exist_ok=True)
     if dimension == 2:
-        grafico_instancias_2d(puntos, pesos, grid_size)
+        grafico_instancias_2d(puntos, pesos, grid_size, 'figuras/contorno_W.png')
         
     hj = HookeJeeves(puntos, pesos)
     t0 = time.time()
@@ -22,6 +23,8 @@ if __name__ == "__main__":
     print("Iteraciones: ", hj.contador_iteraciones)
     print("Óptimo: ", W(opt_hj, puntos, pesos))
     print("Punto: ", opt_hj)
+    if dimension == 2:
+        grafico_instancias_2d(puntos, pesos, grid_size, 'figuras/recorrido_hj.png', hj.recorrido)
     print("-"*30)
 
     wz = Weiszfeld1(puntos, pesos)
@@ -33,6 +36,8 @@ if __name__ == "__main__":
     print("Iteraciones: ", wz.contador_iteraciones)
     print("Óptimo: ", W(opt_wz, puntos, pesos))
     print("Punto: ", opt_wz)
+    if dimension == 2:
+        grafico_instancias_2d(puntos, pesos, grid_size, 'figuras/recorrido_wz.png', wz.recorrido)
     print("-"*30)
     
     dg = Descenso(puntos, pesos, 1e-7)
@@ -44,5 +49,7 @@ if __name__ == "__main__":
     print("Iteraciones: ", dg.contador_iteraciones)
     print("Óptimo: ", W(opt_dg, puntos, pesos))
     print("Punto: ", opt_dg)
+    if dimension == 2:
+        grafico_instancias_2d(puntos, pesos, grid_size, 'figuras/recorrido_dg.png', dg.recorrido)
     print("-"*30)
     

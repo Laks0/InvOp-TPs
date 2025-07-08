@@ -16,10 +16,11 @@ class metodo:
         (cantidad_pesos, ) = pesos.shape
         assert cantidad_puntos == cantidad_pesos
         assert np.all(pesos > 0)
+        
         self.contador_iteraciones = 0
-
         self._puntos = puntos
         self._pesos = pesos
+        self.recorrido = []
 
     def _seleccionar_punto_inicial(self):
         puntos = self._puntos
@@ -41,7 +42,7 @@ def generar_instancias(N = 10_000, grid_size = 500, dimension = 30):
     pesos = np.random.uniform(0, grid_size, (N,))
     return puntos, pesos
 
-def grafico_instancias_2d(puntos, pesos, grid_size):
+def grafico_instancias_2d(puntos, pesos, grid_size, ruta, recorrido=[]):
     nx, ny = grid_size*2, grid_size*2
     x_vals = np.linspace(0, grid_size, nx)
     y_vals = np.linspace(0, grid_size, ny)
@@ -55,11 +56,15 @@ def grafico_instancias_2d(puntos, pesos, grid_size):
     plt.figure()
     contour = plt.contourf(X, Y, Z, levels=30, cmap='gray')
     plt.scatter(puntos[:, 0], puntos[:, 1], s=pesos/np.max(pesos)*grid_size/2, alpha=0.6, marker='+', linewidths=2, c='darkred')
+    if recorrido is not None:
+        x_coords = [x[0] for x in recorrido]
+        y_coords = [x[1] for x in recorrido]
+        plt.plot(x_coords, y_coords, marker='o', lw=1, ms=4)
     plt.title("Contorno de W(x) y puntos ponderados")
     plt.xlabel("x")
     plt.ylabel("y")
     plt.colorbar(contour, label="W(x)")
-    
-    os.makedirs('figuras', exist_ok=True)
-    plt.savefig('figuras/contorno_W.png',dpi=300,bbox_inches='tight')
+    plt.gca().set_aspect('equal', adjustable='box')
+
+    plt.savefig(ruta,dpi=300,bbox_inches='tight')
 
