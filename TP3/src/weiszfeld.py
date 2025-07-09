@@ -4,7 +4,7 @@ import concurrent.futures
 
 from numpy import dtype
 
-from metodos import metodo, generar_instancias
+from metodos import metodo, generar_instancias_uniformes
 
 class Weiszfeld2(metodo):
     def _iterar_desde_punto(self, punto_inicial):
@@ -155,7 +155,7 @@ class Weiszfeld1(metodo):
             return None
 
 if __name__ == "__main__":
-    puntos, pesos = generar_instancias()
+    puntos, pesos = generar_instancias_uniformes()
 
     """
     w = Weiszfeld2(puntos, pesos)

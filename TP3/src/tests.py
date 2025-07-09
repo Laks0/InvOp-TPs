@@ -3,13 +3,13 @@ import os
 from hookeJeeves import HookeJeeves
 from weiszfeld import Weiszfeld1
 from descenso import Descenso
-from metodos import generar_instancias, W, grafico_instancias_2d
+from metodos import generar_instancias_uniformes, W, grafico_instancias_2d
 
 if __name__ == "__main__":
     N = 300
     grid_size = 1000
     dimension = 2
-    puntos, pesos = generar_instancias(N, grid_size, dimension)
+    puntos, pesos = generar_instancias_uniformes(N, grid_size, dimension)
     os.makedirs('figuras', exist_ok=True)
     if dimension == 2:
         grafico_instancias_2d(puntos, pesos, grid_size, 'figuras/contorno_W.png')

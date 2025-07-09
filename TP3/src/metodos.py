@@ -38,10 +38,30 @@ def W(x, puntos, pesos):
     norma = np.linalg.norm(x - puntos, axis=1)
     return np.sum(norma * pesos, axis=0)
 
-def generar_instancias(N = 10_000, grid_size = 500, dimension = 30):
+def generar_instancias_uniformes(N = 10_000, grid_size = 500, dimension = 30):
     puntos = np.random.uniform(0, grid_size, (N, dimension))
     pesos = np.random.uniform(0, grid_size, (N,))
     return puntos, pesos
+
+def generar_instancias_densas(N, grid_size, dimension, n_clusters):
+    clusters = np.random.uniform(0, grid_size, (n_clusters, dimension))
+    puntos_por_cluster = N // n_clusters
+    cluster_stack = []
+    for i in range(n_clusters):
+        centro = clusters[i, :]
+        p_cluster = np.random.uniform(0, grid_size // 1000, (puntos_por_cluster, dimension))
+        cluster_stack.append(centro + p_cluster)
+    resto = N % n_clusters
+    for i in range(resto):
+        centro = clusters[i, :]
+        p_cluster = np.random.uniform(0, grid_size // 1000, (1, dimension))
+        cluster_stack.append(centro + p_cluster)
+    puntos = np.concat(cluster_stack)
+    assert puntos.shape[0] == N
+    pesos = np.random.uniform(0, grid_size, (N,))
+    return puntos, pesos
+
+
 
 def grafico_instancias_2d(puntos, pesos, grid_size, ruta, recorrido=[]):
     nx, ny = len(puntos)*2, len(puntos)*2

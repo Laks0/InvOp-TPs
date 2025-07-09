@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.optimize import minimize_scalar
-from metodos import metodo, generar_instancias, W
+from metodos import metodo, generar_instancias_uniformes, W
 
 class HookeJeeves(metodo):
     def _iterar_coordenado(self, punto_inicial):
@@ -28,7 +28,7 @@ class HookeJeeves(metodo):
             x_0 = x_1
 
 if __name__ == "__main__":
-    puntos, pesos = generar_instancias()
+    puntos, pesos = generar_instancias_uniformes()
     h = HookeJeeves(puntos, pesos)
     optimo = h.optimizar()
     print(optimo)

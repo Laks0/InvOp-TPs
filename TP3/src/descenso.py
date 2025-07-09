@@ -1,5 +1,5 @@
 import numpy as np
-from metodos import metodo, W, generar_instancias
+from metodos import metodo, W, generar_instancias_uniformes
 
 # Gradiente de W
 def DW(x, puntos, pesos):
@@ -43,5 +43,5 @@ class Descenso(metodo):
             #print(D[0])
 
 if __name__ == "__main__":
-    puntos, pesos = generar_instancias()
+    puntos, pesos = generar_instancias_uniformes()
     print(DW(puntos[0]*10, puntos, pesos))

@@ -7,7 +7,7 @@ from memory_profiler import memory_usage
 from hookeJeeves import HookeJeeves
 from weiszfeld import Weiszfeld1
 from descenso import Descenso
-from metodos import generar_instancias, W
+from metodos import generar_instancias_uniformes, generar_instancias_densas, W
 import gc
 
 # Parámetros
@@ -23,8 +23,8 @@ os.makedirs('figuras', exist_ok=True)
 for N in grupos_nodos:
     for run in range(1, replicas + 1):
         # Generar instancias
-        puntos, pesos = generar_instancias(N, grid_size=N*10, dimension=10)
-
+        #puntos, pesos = generar_instancias_uniformes(N, grid_size=N * 10, dimension=10)
+        puntos, pesos = generar_instancias_densas(N, N * 10, 10, 5)
         # Métodos a evaluar
         metodos = [
             ('HookeJeeves', HookeJeeves(puntos, pesos, epsilon_parada)),
