@@ -119,7 +119,7 @@ class Weiszfeld1(metodo):
 
         while True:
             self.contador_iteraciones += 1
-            self.recorrido.append(x_0)
+            #self.recorrido.append(x_0)
             j = self._indice_de_x_en_puntos(x_0)
             if j is not None:
                 # Esta máscara es para las sumas sobre i donde i != j
@@ -141,7 +141,7 @@ class Weiszfeld1(metodo):
         
             x_0 = x_1
             
-        self.recorrido.append(x_0)
+        #self.recorrido.append(x_0)
         return x_0
 
     def _indice_de_x_en_puntos(self, x):
