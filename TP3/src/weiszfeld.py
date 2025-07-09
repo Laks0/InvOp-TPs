@@ -135,9 +135,13 @@ class Weiszfeld1(metodo):
                     x_1 = S(j, R_j, norma_R_j, norma_p_j, mascara_i_dif_j)
             else:
                 x_1 = T(x_0)
-            if np.all(np.isclose(x_0, x_1)):
+            
+            if np.linalg.norm(x_1 - x_0) < self.epsilon:
                 break
+        
             x_0 = x_1
+            
+        self.recorrido.append(x_0)
         return x_0
 
     def _indice_de_x_en_puntos(self, x):

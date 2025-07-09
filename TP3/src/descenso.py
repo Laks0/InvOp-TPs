@@ -16,28 +16,29 @@ def DW(x, puntos, pesos):
     return np.sum(np.diag(norma)@np.diag(pesos_en_uso)@(x-puntos_en_uso), axis=0)
 
 class Descenso(metodo):
-    def __init__(self, puntos, pesos, epsilon):
-        metodo.__init__(self, puntos, pesos)
-        self.epsilon = epsilon
+    def __init__(self, puntos, pesos, epsilon=1e-8):
+        metodo.__init__(self, puntos, pesos, epsilon)
+        self.epsilon_alpha = 1e-8
 
     def _iterar_desde_punto(self, punto_inicial):
-        x = punto_inicial
+        x_0 = punto_inicial
         while True:
-            self.recorrido.append(x)
+            self.recorrido.append(x_0)
             self.contador_iteraciones += 1
             alpha = 1
-            D = DW(x, self._puntos, self._pesos)
-
-            if np.linalg.norm(D) < self.epsilon:
-                return x
-
-            while W(x - alpha * D, self._puntos, self._pesos) >= W(x, self._puntos, self._pesos) - .5 * alpha * (D @ D) and alpha > self.epsilon:
+            D = DW(x_0, self._puntos, self._pesos)
+    
+            while W(x_0 - alpha * D, self._puntos, self._pesos) >= W(x_0, self._puntos, self._pesos) - 0.5 * alpha * (D @ D) and alpha > self.epsilon_alpha:
                 alpha = alpha / 2
             
-            if alpha <= self.epsilon:
-                return x
-            
-            x = x - alpha * D
+            x_1 = x_0 - alpha * D
+    
+            if np.linalg.norm(x_1 - x_0) < self.epsilon:
+                self.recorrido.append(x_1)
+                return x_1
+    
+            x_0 = x_1
+
             #print(D[0])
 
 if __name__ == "__main__":

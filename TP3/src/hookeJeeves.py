@@ -22,7 +22,8 @@ class HookeJeeves(metodo):
             opt_result = minimize_scalar(lambda l: W(x_1 + l*dif, self._puntos, self._pesos))
             x_1 = x_1 + opt_result.x * dif
 
-            if np.all(np.isclose(x_0, x_1)):
+            if np.linalg.norm(x_1 - x_0) < self.epsilon:
+                self.recorrido.append(x_1)
                 return x_1
             x_0 = x_1
 
