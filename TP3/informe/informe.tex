@@ -10,6 +10,7 @@
 \usepackage{graphicx}
 \usepackage{subcaption} % Para subfiguras
 \usepackage{xcolor}
+\usepackage{float} 
 
 \hypersetup{
     colorlinks=true,
@@ -101,10 +102,56 @@ En esta sección se presenta la comparación en rendimientos de los distintos al
 
 Para el análisis implementamos dos tipos de instancias, una con distribución uniforme y otra con clusters definidos que generaban una mayor densidad alrededor de cinco centroides distintos. Para cada tipo generamos cinco replicas de instancias con 100, 500, 1000, 5000 y 10.000 nodos en dos dimensiones distintas, $\mathbb{R}^3$ y $\mathbb{R}^{10}$. Cada instancia se resolvió con los tres algoritmos utilizando un mismo criterio de parada, que la norma de la diferencia entre una iteración y la siguiente sea menor a $10^{-6}$, esto es válido porque la función W que estamos evaluando es convexa, por lo que nos aseguramos estar convergiendo al mínimo global.
 
+El tamaño de la grilla era de $10n \times 10n$ siendo $n$ la cantidad de puntos. Los pesos de generaron aleatoriamente de manera uniforme muestreando el intervalo $(0, 10n)$.
 
+\subsection{Método de descenso}
 
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.9\textwidth}
+	\centering
+	\includegraphics[width=\linewidth]{figuras/Descenso_runtime_plot.png}
+	\caption{Tiempos de convergencia para el método de descenso}
+	\label{fig:desc}
+\end{subfigure}
+\end{figure}
 
+Como se puede observar en la figura \ref{fig:desc} el tiempo de convergencia del algoritmo crece exponencialmente con la cantidad de nodos. Se puede observar que consistentemente los puntos distribuidos en clusters resultaban en un mayor tiempo de convergencia. Incluso en dimensiones más altas donde el costo de cada iteración aumenta por tener dimensiones de matrices mayores.
+
+\subsection{Método de Hooke-Jeeves}
+
+\begin{figure}[H]
+	\begin{subfigure}[t]{0.9\textwidth}
+	\centering
+	\includegraphics[width=\linewidth]{figuras/HookeJeeves_runtime_plot.png}
+	\caption{Tiempos de convergencia para el método de Hooke-Jeeves}
+		\label{fig:hj}
+\end{subfigure}
+\end{figure}
+
+En la figura \ref{fig:hj} se puede observar que la tasa de crecimiento del tiempo de convergencia de Hooke-Jeeves no es exponencial con la cantidad de nodos. Tampoco hay una clara relación entre densidad de puntos y el tiempo de convergencia. Si se puede observar que un aumento en la dimensión del espacio consistentemente resulta en un aumento en el tiempo de convergencia. 
+
+\subsection{Algoritmo de Weiszfeld}
+
+\begin{figure}[H]
+\begin{subfigure}[t]{0.9\textwidth}
+\centering
+\includegraphics[width=\linewidth]{figuras/Weiszfeld_runtime_plot.png}
+\caption{Tiempos de convergencia para el algoritmo de Weiszfeld}
+	\label{fig:w}
+\end{subfigure}
+\end{figure}
+
+En la figura \ref{fig:w} se puede observar los tiempos de convergencia de la variante 1 del algoritmo de Weiszfeld. En regla general es bastante estable el tiempo de convergencia del algoritmo, y no crece desproporcionadamente con la cantidad de puntos.
+
+En el caso de las instancias con puntos uniformemente distribuidos en la grilla el tiempo de convergencia es muy estable. Las instancias con dimensión más alta consistentemente convergen más rápido que las instancias con dimensión más baja. 
+
+Luego las instancias con puntos distribuidos en clusters convergen más lento que las distribuidas uniformemente. Acá se vuelve a repetir que las instancias de dimensión más alta convergen antes que las de dimensión más baja.
 
 \subsection{Conclusión}
+
+De las implementaciones en Python de los algoritmos se puede concluir que el algoritmo de Weiszfeld es la mejor alternativa para resolver el problema computacionalmente. La única desventaja de este algoritmo es que la dificultad de implementar un algoritmo ad-hoc es mayor a la de usar una solución genérica para optimizar funciones. Los tiempos de convergencia para las mismas instancias siempre fueron consistentemente órdenes de magnitud más rápidas que los métodos de Hooke-Jeeves y descenso.
+
+Está abierta la posibilidad de explorar si se puede seleccionar un mejor criterio del paso en el método de descenso y si existen posibles optimizaciones utilizando un lenguaje distinto a Python y bibliotecas de cálculo numérico potencialmente mejores optimizadas que NumPy y SciPy.
 
 \end{document}

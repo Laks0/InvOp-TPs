@@ -9,7 +9,7 @@ epsilon_parada = 1e-6
 
 np.random.seed(1234)
 
-N = 50_000
+N = 100_000
 
 puntos, pesos = generar_instancias_uniformes(N, grid_size=N * 10, dimension=5)
 

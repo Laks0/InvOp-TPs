@@ -12,7 +12,19 @@ def DW(x, puntos, pesos):
     puntos_en_uso = puntos[no_cero]
     pesos_en_uso = pesos[no_cero]
     norma = 1/np.linalg.norm(x - puntos_en_uso, axis=1)
-    return np.sum(np.diag(norma)@np.diag(pesos_en_uso)@(x-puntos_en_uso), axis=0)
+    d_w = np.sum(np.diag(norma)@np.diag(pesos_en_uso)@(x-puntos_en_uso), axis=0)
+
+    try:
+        j = np.argwhere(puntos_en_uso == True)[0,0]
+        # Caso x = p_j
+        v_unit = np.random.random((puntos.shape[1]))
+        v_unit /= np.linalg.norm(v_unit)
+        d_w -= pesos[j] * v_unit
+    except IndexError:
+        pass # Caso x != p_j
+
+    return d_w
+
 
 class Descenso(metodo):
     def __init__(self, puntos, pesos, epsilon=1e-8):
