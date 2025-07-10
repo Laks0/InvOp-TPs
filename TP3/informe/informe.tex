@@ -40,17 +40,37 @@
 
 En este trabajo práctico se implementaron distintos algoritmos para encontrar la ubicación óptima de un centro de servicio médico que responda a zonas afectadas con distintos niveles de atención necesarios. Mas formalmente, se busca encontrar un punto que minimice la suma de las distancias euclidianas ponderadas respecto a un conjunto discreto de puntos, es decir, encontrar la mediana geométrica de dicho conjunto.
 
+Formalmente, dado un conjunto de puntos $ \mathbf{P} = \{p_1, \dots, p_m\} \subset \mathbb{R}^n$ y pesos $w_1, \dots, w_m > 0$, el problema se reduce a encontrar:
+\[
+\mathbf{x}^* = \arg \min_{\mathbf{x} \in \mathbb{R}^n} W(\mathbf{x}) = \sum_{i=1}^{m} w_i \|\mathbf{x} - p_i\|
+\]
+
 \section{Algoritmos}
 
+Se evaluaron tres algoritmos distintos para resolver el problema de minimizar $M$.
 
 \subsection{Weiszfeld}
 
+Se implementó la variante 1  del algoritmo de Weiszfeld (operador $\tilde{T}$). Es un algoritmo iterativo que busca el punto fijo de:
+\[
+T(\mathbf{x}) = \frac{ \sum_{i=1}^{n} \frac{w_i p_i}{\| \mathbf{x} - p_i \|} }{ \sum_{i=1}^{n} \frac{w_i}{\| \mathbf{x} - p_i \|} }
+\]
+$T(\mathbf{x})$ converge al mínimo global de $W$ si $x^{(k)} \notin \mathbf{P} \quad \forall k$.
 
-\subsection{Método de Hooke y Jeeve}
-	
+La variante 1 consiste en encontrar un punto alternativo en las iteraciones donde se caiga en el caso de $T(p_j)$ con $p_j \in \mathbf{P}$.
+
+ La implementación de la variante 1 es correcta porque en el caso de tener un punto $p_j \in \mathbf{P}$ no óptimo, se calcula un punto $S(p_j) = p_j + d_j t_j$ con un cierto paso y dirección de descenso que en la próxima iteración $T$ no se evalúe en un punto de $\mathbf{P}$, así asegurando la eventual convergencia al punto fijo.
+\subsection{Método de Hooke y Jeeves}
+
+Aplicar el método de Hooke y Jeeves para este problema es correcto porque $W$ es una función convexa. Esto quiere decir que un $x^*$ mínimo local de $W$ implica que es un posible mínimo global. Si los puntos de $\mathbf{P}$ no están alineados $W$ es estrictamente convexa y este $x^*$ es único.
+
+Este método no requiere del cálculo del diferencial de $W$, pero con la condición de convexidad se puede asegurar que el método no va a converger en mínimos locales, su convergencia va a ser en un mínimo global.
 	
 \subsection{Descenso de gradiente}
-	
+
+El descenso de gradiente consiste en encontrar un punto tal que $0 \in \partial M(x^*)$. 
+
+$M$ es una función convexa por lo que se puede asegurar que $x^*$ es un mínimo global sii $0 \in \partial M(x^*)$. El resultado de aplicar el método de descenso de gradiente a $M$ es una solución a el problema planteado.
 
 \section{Comparación de tiempos entre algoritmos}
 
