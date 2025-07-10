@@ -38,7 +38,7 @@
 
 \section{Introducción}
 
-En este trabajo práctico se implementaron distintos algoritmos para encontrar la ubicación óptima de un centro de servicio médico que responda a zonas afectadas con distintos niveles de atención necesarios. Mas formalmente, se busca encontrar un punto que minimice la suma de las distancias euclidianas ponderadas respecto a un conjunto discreto de puntos, es decir, encontrar la mediana geométrica de dicho conjunto.
+En este trabajo práctico se implementaron distintos algoritmos para encontrar la ubicación óptima de un centro de servicio médico que responda a zonas afectadas con distintos niveles de atención necesarios. Se busca encontrar un punto que minimice la suma de las distancias euclidianas ponderadas respecto a un conjunto discreto de puntos, es decir, encontrar la mediana geométrica de dicho conjunto.
 
 Formalmente, dado un conjunto de puntos $ \mathbf{P} = \{p_1, \dots, p_m\} \subset \mathbb{R}^n$ y pesos $w_1, \dots, w_m > 0$, el problema se reduce a encontrar:
 \[
@@ -73,6 +73,36 @@ El descenso de gradiente consiste en encontrar un punto tal que $0 \in \partial 
 $M$ es una función convexa por lo que se puede asegurar que $x^*$ es un mínimo global sii $0 \in \partial M(x^*)$. El resultado de aplicar el método de descenso de gradiente a $M$ es una solución a el problema planteado.
 
 \section{Comparación de tiempos entre algoritmos}
+En esta sección se presenta la comparación en rendimientos de los distintos algoritmos, tanto en cantidad de iteraciones como en tiempo de procesamiento. Ademas en la Figura~\ref{fig:recorridos_instancia_8} se pueden ver ejemplos visuales de instancias de dos dimensiones para cada algoritmo y las diferencias en los pasos entre iteraciones.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{figuras/recorrido_wz_8.png}
+		\caption{Weiszfeld}
+	\end{subfigure}
+	\hspace{0.005\textwidth}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{figuras/recorrido_hj_8.png}
+		\caption{Hooke-Jeeves}
+	\end{subfigure}
+	\hspace{0.005\textwidth}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{figuras/recorrido_dg_8.png}
+		\caption{Descenso de Gradiente}
+	\end{subfigure}
+	\caption{Recorridos para los distintos métodos en una misma instancia con 50 puntos ponderados y el contorno de W(x).}
+	\label{fig:recorridos_instancia_8}
+\end{figure}
+
+
+Para el análisis implementamos dos tipos de instancias, una con distribución uniforme y otra con clusters definidos que generaban una mayor densidad alrededor de cinco centroides distintos. Para cada tipo generamos cinco replicas de instancias con 100, 500, 1000, 5000 y 10.000 nodos en dos dimensiones distintas, $\mathbb{R}^3$ y $\mathbb{R}^{10}$. Cada instancia se resolvió con los tres algoritmos utilizando un mismo criterio de parada, que la norma de la diferencia entre una iteración y la siguiente sea menor a $10^{-6}$, esto es válido porque la función W que estamos evaluando es convexa, por lo que nos aseguramos estar convergiendo al mínimo global.
+
+
+
 
 
 \subsection{Conclusión}
